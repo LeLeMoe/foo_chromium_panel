@@ -30,3 +30,13 @@
 *.exe
 *.out
 *.app
+
+# 3rdparty and Build files
+Debug
+Release
+3rdparty
+
+# IDE files
+.vs
+*.vcxproj.filters
+*.vcxproj.user
