@@ -5,7 +5,7 @@
 
 // SDK's header files
 #include "../../ATLHelpers/ATLHelpers.h"
-#include "../../SDK/core_api.h"
+#include "../../SDK/foobar2000.h"
 
 // Project headers
 #include "chromium_window.h"

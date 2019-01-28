@@ -26,8 +26,7 @@ public:
 		return true;
 	}
 	GUID get_guid() override {
-		// GUID: 7FD0C17B-A650-4207-BF24-B57F09F005D1
-		return { 0x7fd0c17b, 0xa650, 0x4207, { 0xbf, 0x24, 0xb5, 0x7f, 0x9, 0xf0, 0x5, 0xd1 } };
+		return GUID(GUID_USER_INTERFACE);
 	}
 	void override_statusbar_text(const char * p_text) override {
 		// TODO
