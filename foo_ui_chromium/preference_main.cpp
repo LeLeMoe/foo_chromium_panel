@@ -26,10 +26,18 @@ public:
 
 	BEGIN_MSG_MAP(PreferenceMain)
 		MSG_WM_INITDIALOG(on_init_dialog)
+		MSG_WM_DESTROY(on_destory)
 	END_MSG_MAP()
 
 private:
 	bool on_init_dialog(CWindow, LPARAM) {
+		// Set font of title
+		HFONT title_font_large = CreateFont(24, 0, 0, 0, FW_DONTCARE, false, false, false, ANSI_CHARSET, OUT_TT_PRECIS, CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY, DEFAULT_PITCH | FF_DONTCARE, L"MS Shell Dlg");
+		SendDlgItemMessage(IDC_TITLE1, WM_SETFONT, reinterpret_cast<WPARAM>(title_font_large), true);
+		return false;
+	}
+	bool on_destory() {
+		DeleteObject(title_font_large);
 		return false;
 	}
 	bool has_changed() {
@@ -39,6 +47,7 @@ private:
 
 private:
 	const preferences_page_callback::ptr callback_function;
+	HFONT title_font_large;
 };
 
 class PreferenceMainImpl : public preferences_page_impl<PreferenceMain> {
@@ -50,9 +59,8 @@ public:
 		return GUID(GUID_PREFERENCE_MAIN);
 	}
 	GUID get_parent_guid() override {
-		return guid_tools;
+		return preferences_page::guid_display;
 	}
 };
 
-static advconfig_branch_factory preference_main_branch(FOO_UI_CHROMIUM_NAME, GUID(GUID_PREFERENCE_MAIN_BRANCH), advconfig_branch::guid_branch_display, 0);
 static preferences_page_factory_t<PreferenceMainImpl> preference_main;
