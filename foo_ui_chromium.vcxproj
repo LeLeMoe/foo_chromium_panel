@@ -128,11 +128,15 @@
     <ClInclude Include="foo_ui_chromium\chromium_window.h" />
     <ClInclude Include="foo_ui_chromium\config.h" />
     <ClInclude Include="foo_ui_chromium\stdafx.h" />
+    <ClInclude Include="resource.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="foo_ui_chromium\chromium_window.cpp" />
     <ClCompile Include="foo_ui_chromium\foo_ui_chromium.cpp" />
     <ClCompile Include="foo_ui_chromium\user_interface_chromium.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="foo_ui_chromium.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

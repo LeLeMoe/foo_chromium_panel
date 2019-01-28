@@ -10,6 +10,14 @@ HWND ChromiumWindow::initialize(user_interface::HookProc_t hook) {
 	CefEnableHighDPISupport();
 	// Set main args
 	CefMainArgs main_args(core_api::get_my_instance());
-
+	// Create Setting
+	CefSettings settings;
+	settings.no_sandbox = true;
+	settings.multi_threaded_message_loop = true;
+	// TODO: Create window
 	return nullptr;
+}
+
+void ChromiumWindow::shutdown() {
+	CefShutdown();
 }
