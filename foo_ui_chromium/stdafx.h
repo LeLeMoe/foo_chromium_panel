@@ -7,5 +7,5 @@
 #include "../../ATLHelpers/ATLHelpers.h"
 #include "../../SDK/foobar2000.h"
 
-// Project headers
-#include "chromium_window.h"
+// Resources
+#include "resource.h"

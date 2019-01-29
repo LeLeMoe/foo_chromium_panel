@@ -1,5 +1,4 @@
 #include "stdafx.h"
-#include "resource.h"
 
 class PreferenceMain : public CDialogImpl<PreferenceMain>, public preferences_page_instance {
 public:

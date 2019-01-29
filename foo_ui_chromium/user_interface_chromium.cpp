@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#include <string>
 
 class UserInterfaceChromium : public user_interface_v2 {
 public:
@@ -10,7 +11,16 @@ public:
 		return FOO_UI_CHROMIUM_NAME;
 	}
 	HWND init(HookProc_t hook) override {
-		return ChromiumWindow::chromium_wiundow.initialize(hook);
+		hook_callback = hook;
+		if(create_window(hook) == false) {
+			MessageBox(nullptr, FOO_UI_CHROMIUM_MSGBOX_WINDOW_FAILED, FOO_UI_CHROMIUM_MSGBOX_TITLE, MB_OK | MB_ICONEXCLAMATION);
+			return nullptr;
+		}
+		if(create_pipe() == false) {
+			MessageBox(nullptr, FOO_UI_CHROMIUM_MSGBOX_PIPE_FAILED, FOO_UI_CHROMIUM_MSGBOX_TITLE, MB_OK | MB_ICONEXCLAMATION);
+			return nullptr;
+		}
+		return window_handle;
 	}
 	void activate() override {
 		// TODO
@@ -19,7 +29,7 @@ public:
 		// TODO
 	}
 	void shutdown() override {
-		// TODO
+		close_pipe();
 	}
 	bool is_visible() override {
 		//TODO
@@ -40,6 +50,74 @@ public:
 	bool query_capability(const GUID & cap) override {
 		return false;
 	}
+
+private:
+
+
+private:
+	bool create_window(HookProc_t hook) {
+		// Register class
+		WNDCLASS wc = {};
+		wc.hInstance = core_api::get_my_instance();
+		wc.hIcon = ui_control::get()->get_main_icon();
+		wc.hCursor = LoadCursor(nullptr, IDC_ARROW);
+		wc.hbrBackground = reinterpret_cast<HBRUSH>(COLOR_BTNFACE + 1);
+		wc.lpszClassName = FOO_UI_CHROMIUM_WINDOW_CLASS;
+		wc.style = CS_DBLCLKS | CS_VREDRAW | CS_HREDRAW;
+		if(RegisterClass(&wc) == false) {
+			return false;
+		}
+		// Create window
+
+		return true;
+	}
+	bool create_pipe() {
+		// Create pipe
+		SECURITY_ATTRIBUTES sa = {};
+		sa.nLength = sizeof(sa);
+		sa.lpSecurityDescriptor = nullptr;
+		sa.bInheritHandle = true;
+		pipe_handle = CreateNamedPipe(FOO_UI_CHROMIUM_PIPE_NAME, PIPE_ACCESS_DUPLEX, PIPE_TYPE_MESSAGE | PIPE_READMODE_MESSAGE | PIPE_WAIT, PIPE_UNLIMITED_INSTANCES, 0, 0, NMPWAIT_WAIT_FOREVER, &sa);
+		if(pipe_handle == INVALID_HANDLE_VALUE) {
+			return false;
+		}
+		// Create process
+		pfc::string8 subprocess_path(core_api::get_my_full_path());
+		pfc::string8 subprocess_name(subprocess_path);
+		subprocess_name.add_string("\\");
+		subprocess_name.add_string(FOO_UI_CHROMIUM_SUB_NAME);
+		STARTUPINFOA si = {};
+		PROCESS_INFORMATION pi = {};
+		if(CreateProcessA(subprocess_name.get_ptr(), nullptr, &sa, &sa, true, 0, nullptr, subprocess_path.get_ptr(), &si, &pi) == false) {
+			return false;
+		}
+		// Connect pipe
+		is_connect = ConnectNamedPipe(pipe_handle, nullptr);
+		if(is_connect == false) {
+			return false;
+		}
+		return true;
+	}
+	void close_window() {
+		if(window_handle != nullptr) {
+			DestroyWindow(window_handle);
+			UnregisterClass(FOO_UI_CHROMIUM_WINDOW_CLASS, core_api::get_my_instance());
+		}
+	}
+	void close_pipe() {
+		if(is_connect == true) {
+			DisconnectNamedPipe(pipe_handle);
+			CloseHandle(pipe_handle);
+		} else if(pipe_handle != INVALID_HANDLE_VALUE) {
+			CloseHandle(pipe_handle);
+		}
+	}
+
+private:
+	HookProc_t hook_callback;
+	HWND window_handle;
+	HANDLE pipe_handle;
+	bool is_connect;
 };
 
 static user_interface_factory<UserInterfaceChromium> user_interface_chromium;
