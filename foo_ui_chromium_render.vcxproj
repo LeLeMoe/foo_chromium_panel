@@ -129,8 +129,10 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="foo_ui_chromium_render\foo_ui_chromium_render.cpp" />
+    <ClCompile Include="foo_ui_chromium_render\distribute_pipe.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="foo_ui_chromium_render\distribute_pipe.h" />
     <ClInclude Include="foo_ui_chromium_render\stdafx.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

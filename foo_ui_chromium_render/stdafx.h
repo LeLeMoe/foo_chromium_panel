@@ -3,6 +3,9 @@
 // Config
 #include "../foo_ui_chromium/config.h"
 
+// STD files
+#include <string>
+
 // Windows file
 #include <Windows.h>
 

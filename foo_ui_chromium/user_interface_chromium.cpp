@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include <string>
+#include "helper.h"
 
 class UserInterfaceChromium : public user_interface_v2 {
 public:
@@ -13,11 +13,11 @@ public:
 	HWND init(HookProc_t hook) override {
 		hook_callback = hook;
 		if(create_window(hook) == false) {
-			MessageBox(nullptr, FOO_UI_CHROMIUM_MSGBOX_WINDOW_FAILED, FOO_UI_CHROMIUM_MSGBOX_TITLE, MB_OK | MB_ICONEXCLAMATION);
+			MessageBox(nullptr, FOO_UI_CHROMIUM_MSGBOX_WINDOW_FAILED, FOO_UI_CHROMIUM_MSGBOX_TITLE, MB_OK | MB_ICONERROR);
 			return nullptr;
 		}
 		if(create_pipe() == false) {
-			MessageBox(nullptr, FOO_UI_CHROMIUM_MSGBOX_PIPE_FAILED, FOO_UI_CHROMIUM_MSGBOX_TITLE, MB_OK | MB_ICONEXCLAMATION);
+			MessageBox(nullptr, FOO_UI_CHROMIUM_MSGBOX_PIPE_FAILED, FOO_UI_CHROMIUM_MSGBOX_TITLE, MB_OK | MB_ICONERROR);
 			return nullptr;
 		}
 		return window_handle;
@@ -52,9 +52,6 @@ public:
 	}
 
 private:
-
-
-private:
 	bool create_window(HookProc_t hook) {
 		// Register class
 		WNDCLASS wc = {};
@@ -82,13 +79,13 @@ private:
 			return false;
 		}
 		// Create process
-		pfc::string8 subprocess_path(core_api::get_my_full_path());
-		pfc::string8 subprocess_name(subprocess_path);
-		subprocess_name.add_string("\\");
-		subprocess_name.add_string(FOO_UI_CHROMIUM_SUB_NAME);
 		STARTUPINFOA si = {};
 		PROCESS_INFORMATION pi = {};
-		if(CreateProcessA(subprocess_name.get_ptr(), nullptr, &sa, &sa, true, 0, nullptr, subprocess_path.get_ptr(), &si, &pi) == false) {
+		pfc::string8 path = core_api::get_my_work_path();
+		pfc::string8 command_line(path);
+		command_line.add_string("\\");
+		command_line.add_string(FOO_UI_CHROMIUM_SUB_FILENAME);
+		if(CreateProcessA(command_line.get_ptr(), nullptr, &sa, &sa, true, 0, nullptr, path.get_ptr(), &si, &pi) == false) {
 			return false;
 		}
 		// Connect pipe

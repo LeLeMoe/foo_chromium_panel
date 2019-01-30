@@ -126,11 +126,15 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="foo_ui_chromium\config.h" />
+    <ClInclude Include="foo_ui_chromium\distribute_pipe.h" />
+    <ClInclude Include="foo_ui_chromium\helper.h" />
     <ClInclude Include="foo_ui_chromium\resource.h" />
     <ClInclude Include="foo_ui_chromium\stdafx.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="foo_ui_chromium\distribute_pipe.cpp" />
     <ClCompile Include="foo_ui_chromium\foo_ui_chromium.cpp" />
+    <ClCompile Include="foo_ui_chromium\helper.cpp" />
     <ClCompile Include="foo_ui_chromium\preference_main.cpp" />
     <ClCompile Include="foo_ui_chromium\user_interface_chromium.cpp" />
   </ItemGroup>

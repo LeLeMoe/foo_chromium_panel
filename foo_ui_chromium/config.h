@@ -11,10 +11,10 @@ constexpr auto FOO_UI_CHROMIUM_FILENAME = "foo_ui_chromium.dll";
 
 // Windows
 constexpr auto FOO_UI_CHROMIUM_WINDOW_CLASS = L"98A1EF29-E327-4399-93AF-76BC7EE061D0";
-constexpr auto FOO_UI_CHROMIUM_SUB_NAME = "foo_ui_chromium_render.exe";
+constexpr auto FOO_UI_CHROMIUM_SUB_FILENAME = "foo_ui_chromium_render.exe";
 
 // Pipe
-constexpr auto FOO_UI_CHROMIUM_PIPE_NAME = L"\\\\.\\pipe\\892C1736-C9E5-4FA9-BAA9-762C55D62D60";
+constexpr auto FOO_UI_CHROMIUM_DISTRIBUTE_PIPE_NAME = L"\\\\.\\pipe\\892C1736-C9E5-4FA9-BAA9-762C55D62D60";
 
 // Text
 constexpr auto FOO_UI_CHROMIUM_MSGBOX_TITLE = L"Chromium UI Error";

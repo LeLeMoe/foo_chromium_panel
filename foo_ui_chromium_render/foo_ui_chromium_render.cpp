@@ -1,23 +1,26 @@
 #include "stdafx.h"
+#include "distribute_pipe.h"
 
 int APIENTRY wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPTSTR lpCmdLine, int nCmdShow) {
 	UNREFERENCED_PARAMETER(hPrevInstance);
 	UNREFERENCED_PARAMETER(lpCmdLine);
-	// Create pipe
-	WaitNamedPipe(FOO_UI_CHROMIUM_PIPE_NAME, NMPWAIT_WAIT_FOREVER);
-	HANDLE pipe_handle = CreateFile(FOO_UI_CHROMIUM_PIPE_NAME, GENERIC_READ | GENERIC_WRITE, 0, nullptr, OPEN_EXISTING, 0, nullptr);
-	if(pipe_handle == INVALID_HANDLE_VALUE) {
-		MessageBox(nullptr, FOO_UI_CHROMIUM_MSGBOX_TITLE, FOO_UI_CHROMIUM_MSGBOX_PIPE_FAILED, MB_OK | MB_ICONEXCLAMATION);
-		return 1;
+	// Get name of message pipe from distribute pipe
+	if(DistributePipe::connect() == false) {
+		MessageBox(nullptr, FOO_UI_CHROMIUM_MSGBOX_PIPE_FAILED, FOO_UI_CHROMIUM_MSGBOX_TITLE, MB_OK | MB_ICONERROR);
+		return 0;
 	}
-	DWORD pipe_mode = PIPE_READMODE_MESSAGE | PIPE_WAIT;
-	if(SetNamedPipeHandleState(pipe_handle, &pipe_mode, nullptr, nullptr) == false) {
-		MessageBox(nullptr, FOO_UI_CHROMIUM_MSGBOX_TITLE, FOO_UI_CHROMIUM_MSGBOX_PIPE_FAILED, MB_OK | MB_ICONEXCLAMATION);
-		return 1;
+	std::string message_pipe_name = DistributePipe::get_message_pipe_name();
+	if(message_pipe_name.empty() == true) {
+		MessageBox(nullptr, FOO_UI_CHROMIUM_MSGBOX_PIPE_FAILED, FOO_UI_CHROMIUM_MSGBOX_TITLE, MB_OK | MB_ICONERROR);
+		DistributePipe::connect();
+		return 0;
 	}
+	DistributePipe::disconnect();
+	// Connect message pipe
+	// TODO
 	// Initialize cef3
 	CefMainArgs main_args(hInstance);
 	// Messgae loop
-	while(1);
+	MessageBox(nullptr, L"WOW!", FOO_UI_CHROMIUM_MSGBOX_TITLE, MB_OK | MB_ICONERROR);
 	return 0;
 }
