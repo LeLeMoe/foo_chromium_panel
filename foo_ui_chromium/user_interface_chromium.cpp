@@ -12,12 +12,9 @@ public:
 	}
 	HWND init(HookProc_t hook) override {
 		hook_callback = hook;
-		if(create_window(hook) == false) {
+		// Create window
+		if(create_window() == false) {
 			MessageBox(nullptr, FOO_UI_CHROMIUM_MSGBOX_WINDOW_FAILED, FOO_UI_CHROMIUM_MSGBOX_TITLE, MB_OK | MB_ICONERROR);
-			return nullptr;
-		}
-		if(create_pipe() == false) {
-			MessageBox(nullptr, FOO_UI_CHROMIUM_MSGBOX_PIPE_FAILED, FOO_UI_CHROMIUM_MSGBOX_TITLE, MB_OK | MB_ICONERROR);
 			return nullptr;
 		}
 		return window_handle;
@@ -29,7 +26,7 @@ public:
 		// TODO
 	}
 	void shutdown() override {
-		close_pipe();
+		close_window();
 	}
 	bool is_visible() override {
 		//TODO
@@ -52,7 +49,7 @@ public:
 	}
 
 private:
-	bool create_window(HookProc_t hook) {
+	bool create_window() {
 		// Register class
 		WNDCLASS wc = {};
 		wc.hInstance = core_api::get_my_instance();
@@ -61,38 +58,19 @@ private:
 		wc.hbrBackground = reinterpret_cast<HBRUSH>(COLOR_BTNFACE + 1);
 		wc.lpszClassName = FOO_UI_CHROMIUM_WINDOW_CLASS;
 		wc.style = CS_DBLCLKS | CS_VREDRAW | CS_HREDRAW;
+		wc.lpfnWndProc = message_process;
 		if(RegisterClass(&wc) == false) {
 			return false;
 		}
 		// Create window
-
-		return true;
-	}
-	bool create_pipe() {
-		// Create pipe
-		SECURITY_ATTRIBUTES sa = {};
-		sa.nLength = sizeof(sa);
-		sa.lpSecurityDescriptor = nullptr;
-		sa.bInheritHandle = true;
-		pipe_handle = CreateNamedPipe(FOO_UI_CHROMIUM_PIPE_NAME, PIPE_ACCESS_DUPLEX, PIPE_TYPE_MESSAGE | PIPE_READMODE_MESSAGE | PIPE_WAIT, PIPE_UNLIMITED_INSTANCES, 0, 0, NMPWAIT_WAIT_FOREVER, &sa);
-		if(pipe_handle == INVALID_HANDLE_VALUE) {
+		auto window_style = WS_OVERLAPPED | WS_MAXIMIZEBOX | WS_MINIMIZEBOX | WS_CAPTION | WS_SYSMENU | WS_CLIPCHILDREN	| WS_CLIPSIBLINGS | WS_THICKFRAME;
+		window_handle = CreateWindow(FOO_UI_CHROMIUM_WINDOW_CLASS, FOO_UI_CHROMIUM_WINDOW_NAME, window_style, CW_USEDEFAULT, CW_USEDEFAULT, 200, 200, nullptr, nullptr, core_api::get_my_instance(), nullptr);
+		if(window_handle == nullptr) {
+			UnregisterClass(FOO_UI_CHROMIUM_WINDOW_CLASS, core_api::get_my_instance());
 			return false;
 		}
-		// Create process
-		STARTUPINFOA si = {};
-		PROCESS_INFORMATION pi = {};
-		pfc::string8 path = core_api::get_my_work_path();
-		pfc::string8 command_line(path);
-		command_line.add_string("\\");
-		command_line.add_string(FOO_UI_CHROMIUM_SUB_FILENAME);
-		if(CreateProcessA(command_line.get_ptr(), nullptr, &sa, &sa, true, 0, nullptr, path.get_ptr(), &si, &pi) == false) {
-			return false;
-		}
-		// Connect pipe
-		is_connect = ConnectNamedPipe(pipe_handle, nullptr);
-		if(is_connect == false) {
-			return false;
-		}
+		ShowWindow(window_handle, SW_SHOWNORMAL);
+		UpdateWindow(window_handle);
 		return true;
 	}
 	void close_window() {
@@ -101,20 +79,27 @@ private:
 			UnregisterClass(FOO_UI_CHROMIUM_WINDOW_CLASS, core_api::get_my_instance());
 		}
 	}
-	void close_pipe() {
-		if(is_connect == true) {
-			DisconnectNamedPipe(pipe_handle);
-			CloseHandle(pipe_handle);
-		} else if(pipe_handle != INVALID_HANDLE_VALUE) {
-			CloseHandle(pipe_handle);
+
+private:
+	static LRESULT CALLBACK message_process(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
+		// Check 
+		LRESULT return_value;
+		if(hook_callback(hwnd, uMsg, wParam, lParam, &return_value) != 0) {
+			return return_value;
 		}
+		// Process message
+		switch(uMsg) {
+		case WM_CLOSE:
+			standard_commands::main_exit();
+			return 0;
+		}
+		return DefWindowProc(hwnd, uMsg, wParam, lParam);
 	}
 
 private:
-	HookProc_t hook_callback;
+	static HookProc_t hook_callback;
 	HWND window_handle;
-	HANDLE pipe_handle;
-	bool is_connect;
 };
 
+user_interface_v2::HookProc_t UserInterfaceChromium::hook_callback;
 static user_interface_factory<UserInterfaceChromium> user_interface_chromium;

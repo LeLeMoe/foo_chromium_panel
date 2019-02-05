@@ -128,12 +128,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="foo_ui_chromium_render\foo_ui_chromium_render.cpp" />
-    <ClCompile Include="foo_ui_chromium_render\distribute_pipe.cpp" />
+    <ClInclude Include="foo_ui_chromium_render\chromium_app.h" />
+    <ClInclude Include="foo_ui_chromium_render\stdafx.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="foo_ui_chromium_render\distribute_pipe.h" />
-    <ClInclude Include="foo_ui_chromium_render\stdafx.h" />
+    <ClCompile Include="foo_ui_chromium_render\chromium_app.cpp" />
+    <ClCompile Include="foo_ui_chromium_render\foo_ui_chromium_render.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

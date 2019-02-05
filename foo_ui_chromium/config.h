@@ -12,11 +12,13 @@ constexpr auto FOO_UI_CHROMIUM_FILENAME = "foo_ui_chromium.dll";
 // Windows
 constexpr auto FOO_UI_CHROMIUM_WINDOW_CLASS = L"98A1EF29-E327-4399-93AF-76BC7EE061D0";
 constexpr auto FOO_UI_CHROMIUM_SUB_FILENAME = "foo_ui_chromium_render.exe";
-
-// Pipe
-constexpr auto FOO_UI_CHROMIUM_DISTRIBUTE_PIPE_NAME = L"\\\\.\\pipe\\892C1736-C9E5-4FA9-BAA9-762C55D62D60";
+constexpr auto FOO_UI_CHROMIUM_WINDOW_NAME = L"foobar2000";
 
 // Text
 constexpr auto FOO_UI_CHROMIUM_MSGBOX_TITLE = L"Chromium UI Error";
 constexpr auto FOO_UI_CHROMIUM_MSGBOX_WINDOW_FAILED = L"Can't create window.";
-constexpr auto FOO_UI_CHROMIUM_MSGBOX_PIPE_FAILED = L"Can't create pipe.";
+constexpr auto FOO_UI_CHROMIUM_NSGBOX_CEF3_FAILED = L"Can't initialize cef3.";
+
+// Message pipe
+constexpr auto PIPE_MESSAGE_NAME = L"\\\\.\\pipe\\336DDD17-12C0-4892-BC9F-9703EE346796";
+constexpr unsigned int PIPE_WAIT_TIME = 1000;

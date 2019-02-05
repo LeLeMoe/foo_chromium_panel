@@ -4,9 +4,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 15.0.27130.2027
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "foo_ui_chromium", "foo_ui_chromium.vcxproj", "{85FBFD09-0099-4FE9-9DB6-78DB6F60F817}"
-	ProjectSection(ProjectDependencies) = postProject
-		{27A2DFEB-9936-4595-BEF3-3A432C013BFA} = {27A2DFEB-9936-4595-BEF3-3A432C013BFA}
-	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "foobar2000_ATL_helpers", "..\ATLHelpers\foobar2000_ATL_helpers.vcxproj", "{622E8B19-8109-4717-BD4D-9657AA78363E}"
 EndProject

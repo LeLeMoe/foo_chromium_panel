@@ -6,4 +6,11 @@ namespace core_api {
 		path.truncate_to_parent_path();
 		return path;
 	}
+
+	pfc::string get_my_render_path() {
+		pfc::string8 work_path = get_my_work_path();
+		work_path.add_string("/");
+		work_path.add_string(FOO_UI_CHROMIUM_SUB_FILENAME);
+		return work_path;
+	}
 }
