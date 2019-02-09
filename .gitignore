@@ -33,7 +33,9 @@
 
 # 3rdparty and Build files
 Debug
+Debug-*
 Release
+Release-*
 3rdparty
 
 # IDE files

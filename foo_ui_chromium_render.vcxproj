@@ -72,12 +72,14 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <IncludePath>3rdparty\cef3;$(IncludePath)</IncludePath>
     <LibraryPath>3rdparty\cef3\Release;$(LibraryPath)</LibraryPath>
-    <OutDir>$(SolutionDir)$(Configuration)\foo_ui_chromium_render</OutDir>
+    <OutDir>$(SolutionDir)$(Configuration)-foo_ui_chromium_render\</OutDir>
+    <IntDir>$(SolutionDir)$(Configuration)-foo_ui_chromium_render\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <IncludePath>3rdparty\cef3;$(IncludePath)</IncludePath>
     <LibraryPath>3rdparty\cef3\Release;$(LibraryPath)</LibraryPath>
-    <OutDir>$(SolutionDir)$(Configuration)\foo_ui_chromium_render</OutDir>
+    <OutDir>$(SolutionDir)$(Configuration)-foo_ui_chromium_render\</OutDir>
+    <IntDir>$(SolutionDir)$(Configuration)-foo_ui_chromium_render\</IntDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>

@@ -1,4 +1,6 @@
 #pragma once
+#include "chromium_client.h"
+#include "chromium_browser_info.h"
 
 class ChromiumApp : public CefApp, public CefBrowserProcessHandler {
 public:
@@ -11,12 +13,16 @@ public:
 	virtual void OnContextInitialized() override;
 
 public:
-	static void register_window(HWND handle);
-	static void initialize_cef();
-	static void do_message_loop_work();
+	static CefRefPtr<ChromiumClient> register_window(BrowserInfo &info);
+	static bool initialize_cef();
 	static void shutdown_cef();
 
+public:
+	static void CALLBACK timer_callback(HWND arg1, UINT arg2, UINT_PTR arg3, DWORD arg4);
+
 private:
-	static pfc::list_t<HWND> window_list;
+	static bool is_initialize_cef;
+	static UINT timer_event;
+	static pfc::list_t<BrowserInfo> window_list;
 	IMPLEMENT_REFCOUNTING(ChromiumApp);
 };

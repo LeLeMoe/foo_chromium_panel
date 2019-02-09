@@ -6,4 +6,7 @@ public:
 
 public:
 	virtual CefRefPtr<CefRenderProcessHandler> GetRenderProcessHandler() override;
+
+private:
+	IMPLEMENT_REFCOUNTING(ChromiumApp);
 };

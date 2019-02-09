@@ -1,5 +1,8 @@
 #include "stdafx.h"
 #include "helper.h"
+#include "chromium_app.h"
+#include "chromium_client.h"
+#include "preference_main.h"
 
 class UserInterfaceChromium : public user_interface_v2 {
 public:
@@ -12,13 +15,12 @@ public:
 	}
 	HWND init(HookProc_t hook) override {
 		hook_callback = hook;
-		// Create window
-		if(create_window() == false) {
-			MessageBox(nullptr, FOO_UI_CHROMIUM_MSGBOX_WINDOW_FAILED, FOO_UI_CHROMIUM_MSGBOX_TITLE, MB_OK | MB_ICONERROR);
+		if(on_initialize() == false) {
 			return nullptr;
+		} else {
+			return window_handle;
 		}
-		return window_handle;
-	}
+ 	}
 	void activate() override {
 		// TODO
 	}
@@ -26,7 +28,7 @@ public:
 		// TODO
 	}
 	void shutdown() override {
-		close_window();
+		on_shutdown();
 	}
 	bool is_visible() override {
 		//TODO
@@ -49,7 +51,7 @@ public:
 	}
 
 private:
-	bool create_window() {
+	bool on_initialize() {
 		// Register class
 		WNDCLASS wc = {};
 		wc.hInstance = core_api::get_my_instance();
@@ -63,19 +65,34 @@ private:
 			return false;
 		}
 		// Create window
-		auto window_style = WS_OVERLAPPED | WS_MAXIMIZEBOX | WS_MINIMIZEBOX | WS_CAPTION | WS_SYSMENU | WS_CLIPCHILDREN	| WS_CLIPSIBLINGS | WS_THICKFRAME;
+		auto window_style = WS_OVERLAPPED | WS_MAXIMIZEBOX | WS_MINIMIZEBOX | WS_CAPTION | WS_SYSMENU | WS_CLIPCHILDREN | WS_CLIPSIBLINGS | WS_THICKFRAME;
 		window_handle = CreateWindow(FOO_UI_CHROMIUM_WINDOW_CLASS, FOO_UI_CHROMIUM_WINDOW_NAME, window_style, CW_USEDEFAULT, CW_USEDEFAULT, 200, 200, nullptr, nullptr, core_api::get_my_instance(), nullptr);
 		if(window_handle == nullptr) {
 			UnregisterClass(FOO_UI_CHROMIUM_WINDOW_CLASS, core_api::get_my_instance());
 			return false;
 		}
+		// Register window to cef
+		BrowserInfo info;
+		info.parent_window = window_handle;
+		info.url = main_url;
+		chromium_client = ChromiumApp::register_window(info);
+		// Initialize cef
+		if(ChromiumApp::initialize_cef() == false) {
+			return false;
+		}
+		// Show window
 		ShowWindow(window_handle, SW_SHOWNORMAL);
 		UpdateWindow(window_handle);
+		standard_commands::main_preferences();
 		return true;
 	}
-	void close_window() {
+	void on_shutdown() {
 		if(window_handle != nullptr) {
-			DestroyWindow(window_handle);
+			// hide window
+			ShowWindow(window_handle, SW_HIDE);
+			// Close cef
+			ChromiumApp::shutdown_cef();
+			// Unregister class
 			UnregisterClass(FOO_UI_CHROMIUM_WINDOW_CLASS, core_api::get_my_instance());
 		}
 	}
@@ -89,17 +106,24 @@ private:
 		}
 		// Process message
 		switch(uMsg) {
-		case WM_CLOSE:
+		case WM_DESTROY:
 			standard_commands::main_exit();
 			return 0;
+		case WM_SIZE:
+			if(chromium_client != nullptr) {
+				chromium_client->resize_browser(LOWORD(lParam), HIWORD(lParam));
+			}
+			break;
 		}
 		return DefWindowProc(hwnd, uMsg, wParam, lParam);
 	}
 
 private:
 	static HookProc_t hook_callback;
+	static CefRefPtr<ChromiumClient> chromium_client;
 	HWND window_handle;
 };
 
 user_interface_v2::HookProc_t UserInterfaceChromium::hook_callback;
+CefRefPtr<ChromiumClient> UserInterfaceChromium::chromium_client = nullptr;
 static user_interface_factory<UserInterfaceChromium> user_interface_chromium;

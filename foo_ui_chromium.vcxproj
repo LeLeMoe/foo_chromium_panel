@@ -41,11 +41,11 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup>
     <_ProjectFileVersion>10.0.30319.1</_ProjectFileVersion>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(SolutionDir)$(Configuration)\foo_ui_chromium</OutDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(Configuration)\</IntDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(SolutionDir)$(Configuration)-foo_ui_chromium\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(SolutionDir)$(Configuration)-foo_ui_chromium\</IntDir>
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</LinkIncremental>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SolutionDir)$(Configuration)\foo_ui_chromium</OutDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(Configuration)\</IntDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SolutionDir)$(Configuration)-foo_ui_chromium\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SolutionDir)$(Configuration)-foo_ui_chromium\</IntDir>
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</LinkIncremental>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -126,16 +126,22 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="foo_ui_chromium\chromium_app.h" />
+    <ClInclude Include="foo_ui_chromium\chromium_browser_info.h" />
+    <ClInclude Include="foo_ui_chromium\chromium_client.h" />
     <ClInclude Include="foo_ui_chromium\config.h" />
     <ClInclude Include="foo_ui_chromium\helper.h" />
+    <ClInclude Include="foo_ui_chromium\preference_main.h" />
+    <ClInclude Include="foo_ui_chromium\preference_taskbar.h" />
     <ClInclude Include="foo_ui_chromium\resource.h" />
     <ClInclude Include="foo_ui_chromium\stdafx.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="foo_ui_chromium\chromium_app.cpp" />
+    <ClCompile Include="foo_ui_chromium\chromium_client.cpp" />
     <ClCompile Include="foo_ui_chromium\foo_ui_chromium.cpp" />
     <ClCompile Include="foo_ui_chromium\helper.cpp" />
     <ClCompile Include="foo_ui_chromium\preference_main.cpp" />
+    <ClCompile Include="foo_ui_chromium\preference_taskbar.cpp" />
     <ClCompile Include="foo_ui_chromium\user_interface_chromium.cpp" />
   </ItemGroup>
   <ItemGroup>
