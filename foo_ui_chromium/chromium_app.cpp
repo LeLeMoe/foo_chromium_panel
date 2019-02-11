@@ -38,7 +38,7 @@ CefRefPtr<ChromiumClient> ChromiumApp::register_window(BrowserInfo &info) {
 }
 
 bool ChromiumApp::initialize_cef() {
-	timer_event = SetTimer(nullptr, 0, 2, timer_callback);
+	timer_event = SetTimer(nullptr, 0, 1, timer_callback);
 	if(timer_event == 0) {
 		return false;
 	} else {
@@ -47,7 +47,7 @@ bool ChromiumApp::initialize_cef() {
 }
 
 void ChromiumApp::shutdown_cef() {
-	// ChromiumClient::close_all_browser();
+	ChromiumClient::close_all_browser();
 	KillTimer(nullptr, timer_event);
 	CefShutdown();
 }

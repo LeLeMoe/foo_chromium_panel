@@ -1,3 +1,3 @@
 #pragma once
 
-extern cfg_string main_url;
+extern cfg_string cfg_main_url;

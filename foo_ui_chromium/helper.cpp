@@ -19,4 +19,10 @@ namespace core_api {
 		work_path.add_string("\\log.txt");
 		return work_path;
 	}
+
+	pfc::string8 get_default_page_path() {
+		pfc::string8 work_path = get_my_work_path();
+		work_path.add_string("\\default\\index.html");
+		return work_path;
+	}
 }

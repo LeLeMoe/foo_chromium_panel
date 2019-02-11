@@ -13,6 +13,7 @@
 
 // Windows
 #include <Windows.h>
+#include <Shobjidl.h>
 
 // Cef3
 #include <include/cef_app.h>

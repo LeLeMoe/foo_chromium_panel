@@ -1,7 +1,8 @@
 #include "stdafx.h"
+#include "helper.h"
 #include "preference_main.h"
 
-cfg_string main_url(GUID_PREFERENCE_MAIN_URL, "");
+cfg_string cfg_main_url(GUID_PREFERENCE_MAIN_URL, core_api::get_default_page_path().c_str());
 
 class PreferenceMain : public CDialogImpl<PreferenceMain>, public preferences_page_instance {
 public:
@@ -19,9 +20,9 @@ public:
 		// Set url
 		char url_text[MAX_PATH] = { 0 };
 		GetWindowTextA(this->GetDlgItem(IDC_EDIT_URL).m_hWnd, url_text, MAX_PATH);
-		main_url = url_text;
-		on_changed();
-		has_changed = false;
+		cfg_main_url = url_text;
+		// on_changed();
+		// has_changed = false;
 	}
 	void reset() override {
 		on_changed();
@@ -49,7 +50,7 @@ private:
 		title_font_large = CreateFont(24, 0, 0, 0, FW_DONTCARE, false, false, false, ANSI_CHARSET, OUT_TT_PRECIS, CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY, DEFAULT_PITCH | FF_DONTCARE, L"MS Shell Dlg");
 		SendDlgItemMessage(IDC_TITLE_GENERAL, WM_SETFONT, reinterpret_cast<WPARAM>(title_font_large), true);
 		// Set text of url edit
-		SendDlgItemMessageA(get_wnd(), IDC_EDIT_URL, WM_SETTEXT, NULL, reinterpret_cast<WPARAM>(main_url.c_str()));
+		SendDlgItemMessageA(get_wnd(), IDC_EDIT_URL, WM_SETTEXT, NULL, reinterpret_cast<WPARAM>(cfg_main_url.c_str()));
 		// Set max length of url edit
 		SendDlgItemMessageA(get_wnd(), IDC_EDIT_URL, EM_LIMITTEXT, MAX_PATH, NULL);
 		return false;
@@ -72,7 +73,12 @@ private:
 		}
 	}
 	void on_url_edit_changed(UINT wNotifyCode, int wID, HWND hWndCtl) {
-		on_changed();
+		char url_text[MAX_PATH] = { 0 };
+		GetWindowTextA(this->GetDlgItem(IDC_EDIT_URL).m_hWnd, url_text, MAX_PATH);
+		pfc::string8 text(url_text);
+		if(text != cfg_main_url) {
+			on_changed();
+		}
 	}
 	bool on_destory() {
 		DeleteObject(title_font_large);

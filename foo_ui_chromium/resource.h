@@ -8,7 +8,12 @@
 #define IDC_HEAD_URL                    1006
 #define IDC_EDIT_URL                    1008
 #define IDC_BUTTON_URL                  1009
-#define IDC_TITLE_TASKBAR               10010
+#define IDC_TITLE_TASKBAR               1010
+#define IDC_CHECK_EN_CUS_ICO            1011
+#define IDC_EDIT_EN_CUS_ICO             1012
+#define IDC_BUTTON_EN_CUS_ICO           1013
+#define IDC_CHECK_AL_SHOW_ICO           1014
+#define IDC_CHECK_MIN_TO_ICO            1016
 
 // Next default values for new objects
 // 
@@ -16,7 +21,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        108
 #define _APS_NEXT_COMMAND_VALUE         40001
-#define _APS_NEXT_CONTROL_VALUE         1011
+#define _APS_NEXT_CONTROL_VALUE         1017
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif
