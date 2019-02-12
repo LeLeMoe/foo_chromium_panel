@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#include "helper.h"
 #include "taskbar_icon.h"
 #include "preference_taskbar.h"
 
@@ -30,6 +31,7 @@ void TaskbarIcon::initialize(HWND hwnd) {
 	menu = CreatePopupMenu();
 	AppendMenuA(menu, MF_STRING, FOO_UI_CHROMIUM_MENU_PREFERENCE, "Preferences");
 	AppendMenuA(menu, MF_MENUBARBREAK, NULL, nullptr);
+	// AppendMenuA(menu, MF_STRING, FOO_UI_CHROMIUM_MENU_OPEN, "Exit");
 	AppendMenuA(menu, MF_STRING, FOO_UI_CHROMIUM_MENU_EXIT, "Exit");
 	// Create taskbar list controler
 	CoInitialize(nullptr);
@@ -59,6 +61,7 @@ void TaskbarIcon::message_process(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lP
 		case WM_LBUTTONDBLCLK:
 			if(cfg_min_to_icon == true) {
 				enable_icon();
+				window_control::enable_window_size(window_handle);
 				ShowWindow(hwnd, SW_SHOWNORMAL);
 				if(cfg_al_show_icon == false) {
 					TaskbarIcon::hide();

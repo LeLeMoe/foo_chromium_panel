@@ -4,6 +4,7 @@
 #include "chromium_client.h"
 #include "preference_main.h"
 #include "preference_taskbar.h"
+#include "preference_private.h"
 #include "taskbar_icon.h"
 
 class UserInterfaceChromium : public user_interface_v2 {
@@ -68,7 +69,7 @@ private:
 		}
 		// Create window
 		auto window_style = WS_OVERLAPPED | WS_MAXIMIZEBOX | WS_MINIMIZEBOX | WS_CAPTION | WS_SYSMENU | WS_CLIPCHILDREN | WS_CLIPSIBLINGS | WS_THICKFRAME;
-		window_handle = CreateWindowEx(WS_EX_APPWINDOW, FOO_UI_CHROMIUM_WINDOW_CLASS, FOO_UI_CHROMIUM_WINDOW_NAME, window_style, CW_USEDEFAULT, CW_USEDEFAULT, 200, 200, nullptr, nullptr, core_api::get_my_instance(), nullptr);
+		window_handle = CreateWindowEx(WS_EX_APPWINDOW, FOO_UI_CHROMIUM_WINDOW_CLASS, FOO_UI_CHROMIUM_WINDOW_NAME, window_style, cfg_window_x, cfg_window_y, cfg_window_width, cfg_window_height, nullptr, nullptr, core_api::get_my_instance(), nullptr);
 		if(window_handle == nullptr) {
 			UnregisterClass(FOO_UI_CHROMIUM_WINDOW_CLASS, core_api::get_my_instance());
 			return false;
@@ -129,9 +130,10 @@ private:
 		case WM_SYSCOMMAND:
 			switch(wParam) {
 			case SC_MINIMIZE:
+				window_control::save_window_size(hwnd);
 				if(cfg_min_to_icon == true) {
-					TaskbarIcon::disable_icon();
 					ShowWindow(hwnd, SW_MINIMIZE);
+					TaskbarIcon::disable_icon();
 					if(cfg_al_show_icon == false) {
 						TaskbarIcon::show();
 					}
