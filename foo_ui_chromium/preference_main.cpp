@@ -21,8 +21,8 @@ public:
 		char url_text[MAX_PATH] = { 0 };
 		GetWindowTextA(this->GetDlgItem(IDC_EDIT_URL).m_hWnd, url_text, MAX_PATH);
 		cfg_main_url = url_text;
-		// on_changed();
-		// has_changed = false;
+		on_changed();
+		has_changed = false;
 	}
 	void reset() override {
 		on_changed();

@@ -130,7 +130,9 @@ private:
 		case WM_SYSCOMMAND:
 			switch(wParam) {
 			case SC_MINIMIZE:
-				window_control::save_window_size(hwnd);
+				if(cfg_window_is_max == false) {
+					window_control::save_window_size(hwnd);
+				}
 				if(cfg_min_to_icon == true) {
 					ShowWindow(hwnd, SW_MINIMIZE);
 					TaskbarIcon::disable_icon();
@@ -138,6 +140,13 @@ private:
 						TaskbarIcon::show();
 					}
 				}
+				break;
+			case SC_MAXIMIZE:
+				cfg_window_is_max = true;
+				break;
+			case SC_RESTORE:
+				cfg_window_is_max = false;
+				break;
 			}
 			break;
 		}

@@ -2,6 +2,7 @@
 #include "helper.h"
 #include "taskbar_icon.h"
 #include "preference_taskbar.h"
+#include "preference_private.h"
 
 HICON TaskbarIcon::icon = nullptr;
 NOTIFYICONDATAA TaskbarIcon::notify_icon = { 0 };
@@ -61,8 +62,12 @@ void TaskbarIcon::message_process(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lP
 		case WM_LBUTTONDBLCLK:
 			if(cfg_min_to_icon == true) {
 				enable_icon();
-				window_control::enable_window_size(window_handle);
-				ShowWindow(hwnd, SW_SHOWNORMAL);
+				if(cfg_window_is_max == false) {
+					window_control::enable_window_size(window_handle);
+					ShowWindow(hwnd, SW_SHOWNORMAL);
+				} else {
+					ShowWindow(hwnd, SW_MAXIMIZE);
+				}
 				if(cfg_al_show_icon == false) {
 					TaskbarIcon::hide();
 				}

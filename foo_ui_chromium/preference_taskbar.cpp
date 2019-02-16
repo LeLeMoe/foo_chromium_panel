@@ -28,8 +28,8 @@ public:
 		cfg_al_show_icon = SendDlgItemMessageA(get_wnd(), IDC_CHECK_AL_SHOW_ICO, BM_GETCHECK, NULL, NULL) == BST_CHECKED;
 		// Set minimize to icon state
 		cfg_min_to_icon = SendDlgItemMessageA(get_wnd(), IDC_CHECK_MIN_TO_ICO, BM_GETCHECK, NULL, NULL) == BST_CHECKED;
-		// on_changed();
-		// has_changed = false;
+		on_changed();
+		has_changed = false;
 	}
 	void reset() override {
 		on_changed();
@@ -69,6 +69,9 @@ private:
 		// Set custom icon url
 		SendDlgItemMessageA(get_wnd(), IDC_EDIT_EN_CUS_ICO, WM_SETTEXT, NULL, reinterpret_cast<WPARAM>(cfg_custom_icon_url.c_str()));
 		SendDlgItemMessageA(get_wnd(), IDC_EDIT_EN_CUS_ICO, EM_LIMITTEXT, MAX_PATH, NULL);
+		if(cfg_use_custom_icon == false) {
+			this->GetDlgItem(IDC_EDIT_EN_CUS_ICO).EnableWindow(false);
+		}
 		// Set change button
 		if(cfg_use_custom_icon == false) {
 			this->GetDlgItem(IDC_BUTTON_EN_CUS_ICO).EnableWindow(false);
@@ -89,8 +92,10 @@ private:
 	}
 	void on_cus_icon_check_clicked(UINT wNotifyCode, int wID, HWND hWndCtl) {
 		if(SendDlgItemMessageA(get_wnd(), IDC_CHECK_EN_CUS_ICO, BM_GETCHECK, NULL, NULL) == BST_UNCHECKED) {
+			this->GetDlgItem(IDC_EDIT_EN_CUS_ICO).EnableWindow(false);
 			this->GetDlgItem(IDC_BUTTON_EN_CUS_ICO).EnableWindow(false);
 		} else {
+			this->GetDlgItem(IDC_EDIT_EN_CUS_ICO).EnableWindow(true);
 			this->GetDlgItem(IDC_BUTTON_EN_CUS_ICO).EnableWindow(true);
 		}
 		on_changed();
