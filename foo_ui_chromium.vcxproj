@@ -130,9 +130,11 @@
     <ClInclude Include="foo_ui_chromium\chromium_client.h" />
     <ClInclude Include="foo_ui_chromium\config.h" />
     <ClInclude Include="foo_ui_chromium\helper.h" />
+    <ClInclude Include="foo_ui_chromium\message_object.h" />
     <ClInclude Include="foo_ui_chromium\preference_main.h" />
     <ClInclude Include="foo_ui_chromium\preference_private.h" />
     <ClInclude Include="foo_ui_chromium\preference_taskbar.h" />
+    <ClInclude Include="foo_ui_chromium\preference_window.h" />
     <ClInclude Include="foo_ui_chromium\resource.h" />
     <ClInclude Include="foo_ui_chromium\stdafx.h" />
     <ClInclude Include="foo_ui_chromium\taskbar_icon.h" />
@@ -142,9 +144,11 @@
     <ClCompile Include="foo_ui_chromium\chromium_client.cpp" />
     <ClCompile Include="foo_ui_chromium\foo_ui_chromium.cpp" />
     <ClCompile Include="foo_ui_chromium\helper.cpp" />
+    <ClCompile Include="foo_ui_chromium\message_object.cpp" />
     <ClCompile Include="foo_ui_chromium\preference_main.cpp" />
     <ClCompile Include="foo_ui_chromium\preference_private.cpp" />
     <ClCompile Include="foo_ui_chromium\preference_taskbar.cpp" />
+    <ClCompile Include="foo_ui_chromium\preference_window.cpp" />
     <ClCompile Include="foo_ui_chromium\taskbar_icon.cpp" />
     <ClCompile Include="foo_ui_chromium\user_interface_chromium.cpp" />
   </ItemGroup>

@@ -1,9 +1,0 @@
-﻿1>------ 已启动生成: 项目: foo_ui_chromium, 配置: Release Win32 ------
-1>D:\Visual Studio\Common7\IDE\VC\VCTargets\Platforms\Win32\PlatformToolsets\v141_xp\Toolset.targets(39,5): warning MSB8051: 面向 Windows XP 的支持已被弃用，将来的 Visual Studio 版本不再提供该支持。请访问 https://go.microsoft.com/fwlink/?linkid=2023588，获取详细信息。
-1>helper.cpp
-1>taskbar_icon.cpp
-1>user_interface_chromium.cpp
-1>e:\project\program\foobra2000\foobar2000\foo_ui_chromium\foo_ui_chromium\user_interface_chromium.cpp(149): error C2065: “cfg_window_max”: 未声明的标识符
-1>e:\project\program\foobra2000\foobar2000\foo_ui_chromium\foo_ui_chromium\user_interface_chromium.cpp(152): error C2065: “cfg_window_max”: 未声明的标识符
-1>已完成生成项目“foo_ui_chromium.vcxproj”的操作 - 失败。
-========== 生成: 成功 0 个，失败 1 个，最新 6 个，跳过 0 个 ==========

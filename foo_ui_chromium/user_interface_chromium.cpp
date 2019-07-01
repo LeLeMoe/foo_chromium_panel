@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "helper.h"
+#include "message_object.h"
 #include "chromium_app.h"
 #include "chromium_client.h"
 #include "preference_main.h"
@@ -7,7 +8,7 @@
 #include "preference_private.h"
 #include "taskbar_icon.h"
 
-class UserInterfaceChromium : public user_interface_v2 {
+class UserInterfaceChromium : public user_interface_v2, public message_object {
 public:
 	UserInterfaceChromium() = default;
 	~UserInterfaceChromium() = default;
@@ -17,7 +18,8 @@ public:
 		return FOO_UI_CHROMIUM_NAME;
 	}
 	HWND init(HookProc_t hook) override {
-		hook_callback = hook;
+		// hook_callback = hook;
+		message_object::set_hook_function(hook);
 		if(on_initialize() == false) {
 			return nullptr;
 		} else {
@@ -63,10 +65,13 @@ private:
 		wc.hbrBackground = reinterpret_cast<HBRUSH>(COLOR_BTNFACE + 1);
 		wc.lpszClassName = FOO_UI_CHROMIUM_WINDOW_CLASS;
 		wc.style = CS_DBLCLKS | CS_VREDRAW | CS_HREDRAW;
-		wc.lpfnWndProc = message_process;
+		// wc.lpfnWndProc = message_process;
+		wc.lpfnWndProc = message_object::message_process;
 		if(RegisterClass(&wc) == false) {
 			return false;
 		}
+		// Register message
+		this->register_message();
 		// Create window
 		auto window_style = WS_OVERLAPPED | WS_MAXIMIZEBOX | WS_MINIMIZEBOX | WS_CAPTION | WS_SYSMENU | WS_CLIPCHILDREN | WS_CLIPSIBLINGS | WS_THICKFRAME;
 		window_handle = CreateWindowEx(WS_EX_APPWINDOW, FOO_UI_CHROMIUM_WINDOW_CLASS, FOO_UI_CHROMIUM_WINDOW_NAME, window_style, cfg_window_x, cfg_window_y, cfg_window_width, cfg_window_height, nullptr, nullptr, core_api::get_my_instance(), nullptr);

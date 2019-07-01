@@ -26,7 +26,7 @@ void TaskbarIcon::initialize(HWND hwnd) {
 	notify_icon.uFlags = NIF_ICON | NIF_GUID | NIF_TIP | NIF_MESSAGE;
 	notify_icon.hIcon = icon;
 	notify_icon.guidItem = GUID(GUID_TASKBAR_ICON);
-	notify_icon.uCallbackMessage = WM_USER;
+	notify_icon.uCallbackMessage = FOO_UI_MSG_ICONBAR;
 	strcpy_s(notify_icon.szTip, "foobar2000");
 	// Create menu
 	menu = CreatePopupMenu();
@@ -57,7 +57,7 @@ void TaskbarIcon::disable_icon() {
 }
 
 void TaskbarIcon::message_process(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
-	if(uMsg == WM_USER) {
+	if(uMsg == FOO_UI_MSG_ICONBAR) {
 		switch(lParam) {
 		case WM_LBUTTONDBLCLK:
 			if(cfg_min_to_icon == true) {

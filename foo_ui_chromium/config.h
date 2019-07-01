@@ -20,9 +20,11 @@ constexpr auto FOO_UI_CHROMIUM_FILENAME = "foo_ui_chromium.dll";
 #define GUID_PREFERENCE_PRIVATE_WINDOW_WIDTH { 0x1b4a1b34, 0x5efc, 0x47ac, { 0xa9, 0x6f, 0xdc, 0x96, 0xdb, 0xdd, 0xd2, 0xd0 } }
 #define GUID_PREFERENCE_PRIVATE_WINDOW_HEIGHT { 0xdb4fdf05, 0x5476, 0x4f70, { 0x8a, 0xce, 0x14, 0xd9, 0x9d, 0xbc, 0x8d, 0x57 } }
 #define GUID_PREFERENCE_PRIVATE_WINDOW_MAX { 0x20c1d649, 0x801c, 0x48ba, { 0x80, 0x1e, 0x91, 0xa1, 0xa7, 0x4d, 0xeb, 0xc7 } }
+#define GUID_PREFERENCE_WINDOW { 0x9b0b4885, 0xd2fd, 0x478c, { 0x90, 0x9c, 0x91, 0x1a, 0xe2, 0x1e, 0x34, 0x8f } }
 
 // Preference name
 constexpr auto FOO_UI_PREFERNECE_TASKBAR_NAME = "Taskbar Icon";
+constexpr auto FOO_UI_PREFERENCE_WINDOW_NAME = "Window Behaviour";
 
 // Windows
 constexpr auto FOO_UI_CHROMIUM_WINDOW_CLASS = L"98A1EF29-E327-4399-93AF-76BC7EE061D0";
@@ -33,3 +35,6 @@ constexpr auto FOO_UI_CHROMIUM_WINDOW_NAME = L"foobar2000";
 constexpr auto FOO_UI_CHROMIUM_MENU_PREFERENCE = 0x03;
 constexpr auto FOO_UI_CHROMIUM_MENU_OPEN = 0x02;
 constexpr auto FOO_UI_CHROMIUM_MENU_EXIT = 0x01;
+
+// Message ID
+constexpr auto FOO_UI_MSG_ICONBAR = 0x2A00;
