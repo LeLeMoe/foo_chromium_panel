@@ -1,22 +1,27 @@
 #pragma once
 
-class TaskbarIcon {
+#include "message_object.h"
+
+class TaskbarIcon : public MessageObject {
 public:
-	TaskbarIcon() = delete;
+	TaskbarIcon();
+	~TaskbarIcon() = default;
 
 public:
-	static void initialize(HWND hwnd);
-	static void show();
-	static void hide();
-	static void enable_icon();
-	static void disable_icon();
-	static void message_process(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
-	static void destroy();
+	void initialize(HWND hwnd);
+	void show();
+	void hide();
+	void enable_icon();
+	void disable_icon();
+	void destroy();
+
+public:
+	LRESULT process_mouse(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 
 private:
-	static HICON icon;
-	static NOTIFYICONDATAA notify_icon;
-	static HWND window_handle;
-	static HMENU menu;
-	static ITaskbarList *taskbar_list;
+	HICON icon;
+	NOTIFYICONDATAA notify_icon;
+	HWND window_handle;
+	HMENU menu;
+	ITaskbarList *taskbar_list;
 };

@@ -8,7 +8,7 @@
 #include "preference_private.h"
 #include "taskbar_icon.h"
 
-class UserInterfaceChromium : public user_interface_v2, public message_object {
+class UserInterfaceChromium : public user_interface_v2, public MessageObject {
 public:
 	UserInterfaceChromium() = default;
 	~UserInterfaceChromium() = default;
@@ -19,7 +19,7 @@ public:
 	}
 	HWND init(HookProc_t hook) override {
 		// hook_callback = hook;
-		message_object::set_hook_function(hook);
+		MessageObject::set_hook_function(hook);
 		if(on_initialize() == false) {
 			return nullptr;
 		} else {
@@ -55,6 +55,41 @@ public:
 		return false;
 	}
 
+public:
+	LRESULT process_destroy(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
+		standard_commands::main_exit();
+		return 0;
+	}
+	LRESULT process_size(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
+		if (chromium_client != nullptr) {
+			chromium_client->resize_browser(LOWORD(lParam), HIWORD(lParam));
+		}
+		return DefWindowProc(hwnd, uMsg, wParam, lParam);
+	}
+	LRESULT process_syscommand(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
+		switch (wParam) {
+		case SC_MINIMIZE:
+			if (cfg_window_is_max == false) {
+				window_control::save_window_size(hwnd);
+			}
+			if (cfg_min_to_icon == true) {
+				ShowWindow(hwnd, SW_MINIMIZE);
+				taskbar_icon.disable_icon();
+				if (cfg_al_show_icon == false) {
+					taskbar_icon.show();
+				}
+			}
+			break;
+		case SC_MAXIMIZE:
+			cfg_window_is_max = true;
+			break;
+		case SC_RESTORE:
+			cfg_window_is_max = false;
+			break;
+		}
+		return DefWindowProc(hwnd, uMsg, wParam, lParam);
+	}
+
 private:
 	bool on_initialize() {
 		// Register class
@@ -66,12 +101,14 @@ private:
 		wc.lpszClassName = FOO_UI_CHROMIUM_WINDOW_CLASS;
 		wc.style = CS_DBLCLKS | CS_VREDRAW | CS_HREDRAW;
 		// wc.lpfnWndProc = message_process;
-		wc.lpfnWndProc = message_object::message_process;
+		wc.lpfnWndProc = MessageObject::message_process;
 		if(RegisterClass(&wc) == false) {
 			return false;
 		}
 		// Register message
-		this->register_message();
+		this->register_message(WM_DESTROY, this, &UserInterfaceChromium::process_destroy);
+		this->register_message(WM_SIZE, this, &UserInterfaceChromium::process_size);
+		this->register_message(WM_SYSCOMMAND, this, &UserInterfaceChromium::process_syscommand);
 		// Create window
 		auto window_style = WS_OVERLAPPED | WS_MAXIMIZEBOX | WS_MINIMIZEBOX | WS_CAPTION | WS_SYSMENU | WS_CLIPCHILDREN | WS_CLIPSIBLINGS | WS_THICKFRAME;
 		window_handle = CreateWindowEx(WS_EX_APPWINDOW, FOO_UI_CHROMIUM_WINDOW_CLASS, FOO_UI_CHROMIUM_WINDOW_NAME, window_style, cfg_window_x, cfg_window_y, cfg_window_width, cfg_window_height, nullptr, nullptr, core_api::get_my_instance(), nullptr);
@@ -87,6 +124,9 @@ private:
 		// Initialize cef
 		if(ChromiumApp::initialize_cef() == false) {
 			DestroyWindow(window_handle);
+			this->unregister_message(WM_DESTROY);
+			this->unregister_message(WM_SIZE);
+			this->unregister_message(WM_SYSCOMMAND);
 			UnregisterClass(FOO_UI_CHROMIUM_WINDOW_CLASS, core_api::get_my_instance());
 			return false;
 		}
@@ -94,74 +134,34 @@ private:
 		ShowWindow(window_handle, SW_SHOWNORMAL);
 		UpdateWindow(window_handle);
 		// Initialize taskbar icon
-		TaskbarIcon::initialize(window_handle);
+		taskbar_icon.initialize(window_handle);
 		if(cfg_al_show_icon == true) {
-			TaskbarIcon::show();
+			taskbar_icon.show();
 		}
 		return true;
 	}
 	void on_shutdown() {
 		if(window_handle != nullptr) {
 			// Delete taskbar icon
-			TaskbarIcon::destroy();
+			taskbar_icon.destroy();
 			// hide window
 			ShowWindow(window_handle, SW_MINIMIZE);
 			// Close cef
 			ChromiumApp::shutdown_cef();
+			// Unregister message
+			this->unregister_message(WM_DESTROY);
+			this->unregister_message(WM_SIZE);
+			this->unregister_message(WM_SYSCOMMAND);
 			// Unregister class
 			UnregisterClass(FOO_UI_CHROMIUM_WINDOW_CLASS, core_api::get_my_instance());
 		}
 	}
 
 private:
-	static LRESULT CALLBACK message_process(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
-		// Check
-		LRESULT return_value;
-		if(hook_callback(hwnd, uMsg, wParam, lParam, &return_value) != 0) {
-			return return_value;
-		}
-		// Check taskbar icon message
-		TaskbarIcon::message_process(hwnd, uMsg, wParam, lParam);
-		// Process message
-		switch(uMsg) {
-		case WM_DESTROY:
-			standard_commands::main_exit();
-			return 0;
-		case WM_SIZE:
-			if(chromium_client != nullptr) {
-				chromium_client->resize_browser(LOWORD(lParam), HIWORD(lParam));
-			}
-			break;
-		case WM_SYSCOMMAND:
-			switch(wParam) {
-			case SC_MINIMIZE:
-				if(cfg_window_is_max == false) {
-					window_control::save_window_size(hwnd);
-				}
-				if(cfg_min_to_icon == true) {
-					ShowWindow(hwnd, SW_MINIMIZE);
-					TaskbarIcon::disable_icon();
-					if(cfg_al_show_icon == false) {
-						TaskbarIcon::show();
-					}
-				}
-				break;
-			case SC_MAXIMIZE:
-				cfg_window_is_max = true;
-				break;
-			case SC_RESTORE:
-				cfg_window_is_max = false;
-				break;
-			}
-			break;
-		}
-		return DefWindowProc(hwnd, uMsg, wParam, lParam);
-	}
-
-private:
 	static HookProc_t hook_callback;
 	static CefRefPtr<ChromiumClient> chromium_client;
 	HWND window_handle;
+	TaskbarIcon taskbar_icon;
 };
 
 user_interface_v2::HookProc_t UserInterfaceChromium::hook_callback;
