@@ -53,6 +53,7 @@ void ChromiumApp::shutdown_cef() {
 }
 
 void CALLBACK ChromiumApp::timer_callback(HWND arg1, UINT arg2, UINT_PTR arg3, DWORD arg4) {
+	// TODO
 	if(is_initialize_cef == true) {
 		CefDoMessageLoopWork();
 	} else if(core_api::is_initializing() == false) {
