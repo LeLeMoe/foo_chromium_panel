@@ -38,7 +38,7 @@ CefRefPtr<ChromiumClient> ChromiumApp::register_window(BrowserInfo &info) {
 }
 
 bool ChromiumApp::initialize_cef() {
-	timer_event = SetTimer(nullptr, 0, 1, timer_callback);
+	timer_event = SetTimer(nullptr, 0, 100, timer_callback);
 	if(timer_event == 0) {
 		return false;
 	} else {
@@ -53,7 +53,6 @@ void ChromiumApp::shutdown_cef() {
 }
 
 void CALLBACK ChromiumApp::timer_callback(HWND arg1, UINT arg2, UINT_PTR arg3, DWORD arg4) {
-	// TODO
 	if(is_initialize_cef == true) {
 		CefDoMessageLoopWork();
 	} else if(core_api::is_initializing() == false) {

@@ -12,9 +12,24 @@ CefRefPtr<CefLifeSpanHandler> ChromiumClient::GetLifeSpanHandler() {
 	return this;
 }
 
+CefRefPtr<CefRequestHandler> ChromiumClient::GetRequestHandler() {
+	return this;
+}
+
+bool ChromiumClient::OnProcessMessageReceived(CefRefPtr<CefBrowser> browser, CefProcessId source_process, CefRefPtr<CefProcessMessage> message) {
+	CEF_REQUIRE_UI_THREAD();
+	return this->message_router->OnProcessMessageReceived(browser, source_process, message);
+}
+
 void ChromiumClient::OnAfterCreated(CefRefPtr<CefBrowser> browser) {
 	CEF_REQUIRE_UI_THREAD();
 	browser_ins = browser;
+	// Initialize message router when it is not created.
+	if (this->message_router == nullptr) {
+		CefMessageRouterConfig config;
+		this->message_router = CefMessageRouterBrowserSide::Create(config);
+		this->message_router->AddHandler(&this->message_handler, true);
+	}
 }
 
 bool ChromiumClient::DoClose(CefRefPtr<CefBrowser> browser) {
@@ -24,6 +39,19 @@ bool ChromiumClient::DoClose(CefRefPtr<CefBrowser> browser) {
 
 void ChromiumClient::OnBeforeClose(CefRefPtr<CefBrowser> browser) {
 	CEF_REQUIRE_UI_THREAD();
+	this->message_router->RemoveHandler(&this->message_handler);
+	this->message_router = nullptr;
+}
+
+bool ChromiumClient::OnBeforeBrowse(CefRefPtr<CefBrowser> browser, CefRefPtr<CefFrame> frame, CefRefPtr<CefRequest> request, bool user_gesture, bool is_redirect) {
+	CEF_REQUIRE_UI_THREAD();
+	this->message_router->OnBeforeBrowse(browser, frame);
+	return false;
+}
+
+void ChromiumClient::OnRenderProcessTerminated(CefRefPtr<CefBrowser> browser, TerminationStatus status) {
+	CEF_REQUIRE_UI_THREAD();
+	this->message_router->OnRenderProcessTerminated(browser);
 }
 
 void ChromiumClient::resize_browser(unsigned int width, unsigned height) {

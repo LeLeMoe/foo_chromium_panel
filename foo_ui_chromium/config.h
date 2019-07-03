@@ -38,3 +38,15 @@ constexpr auto FOO_UI_CHROMIUM_MENU_EXIT = 0x01;
 
 // Message ID
 constexpr auto FOO_UI_MSG_ICONBAR = 0x2A00;
+
+// Cef extension name
+constexpr auto FOO_UI_CEF_EXTENSION_NAME = "v8/foo_ui_chromium_api";
+
+// Result error code
+constexpr auto FOO_UI_CEF_API_ERROR_NONE = 0;
+
+// Request GUID
+constexpr auto FOO_UI_CEF_API_FB2K_PLAY = "F13CF149-39C1-4B1B-885D-68E86D29FD2A";
+constexpr auto FOO_UI_CEF_API_FB2K_PAUSE = "BC3A82F4-EA0A-4F9A-8AE7-0AF4541F0D3E";
+constexpr auto FOO_UI_CEF_API_FB2K_NEXT = "63AC1132-34FC-4517-84FF-99831C1E4963";
+constexpr auto FOO_UI_CEF_API_FB2K_PREVIOUS = "134BB381-3242-49CA-AF95-A408614EE829";

@@ -131,11 +131,18 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="foo_ui_chromium_render\chromium_app.h" />
+    <ClInclude Include="foo_ui_chromium_render\resource.h" />
     <ClInclude Include="foo_ui_chromium_render\stdafx.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="foo_ui_chromium_render\chromium_app.cpp" />
     <ClCompile Include="foo_ui_chromium_render\foo_ui_chromium_render.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="foo_ui_chromium_render\foo_ui_chromium_api.js" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="foo_ui_chromium_render\foo_ui_chromium_render.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
