@@ -34,9 +34,10 @@
 # 3rdparty and Build files
 Debug
 Debug-*
+Debug FB2K
 Release
 Release-*
-3rdparty
+Release FB2K
 
 # IDE files
 .vs

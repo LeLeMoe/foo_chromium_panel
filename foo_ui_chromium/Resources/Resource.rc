@@ -1,0 +1,153 @@
+// Microsoft Visual C++ generated resource script.
+//
+#pragma code_page(65001)
+
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "winres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// 中文(简体，中国) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_CHS)
+LANGUAGE LANG_CHINESE, SUBLANG_CHINESE_SIMPLIFIED
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE 
+BEGIN
+    "#include ""winres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE 
+BEGIN
+    "\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_PREFERENCE_MAIN DIALOGEX 0, 0, 332, 288
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    LTEXT           "General",IDC_TITLE_GENERAL,6,6,96,24
+    LTEXT           "Url",IDC_HEAD_URL,6,30,10,8
+    EDITTEXT        IDC_EDIT_URL,6,42,282,14,ES_AUTOHSCROLL
+    PUSHBUTTON      "Browse",IDC_BUTTON_URL,294,42,32,14
+END
+
+IDD_PREFERENCE_NOTIFY_ICON DIALOGEX 0, 0, 332, 288
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    LTEXT           "Nofity Icon",IDC_TITLE_WINDOW,6,6,96,24
+    CONTROL         "Use custom icon",IDC_CHECK_EN_CUS_ICO,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,6,30,67,10
+    EDITTEXT        IDC_EDIT_EN_CUS_ICO,6,42,282,14,ES_AUTOHSCROLL
+    PUSHBUTTON      "Browse",IDC_BUTTON_EN_CUS_ICO,294,42,32,14
+    CONTROL         "Always show icon",IDC_CHECK_AL_SHOW_ICO,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,6,66,72,10
+    CONTROL         "Minimize to icon",IDC_CHECK_MIN_TO_ICO,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,6,84,65,10
+END
+
+IDD_PREFERENCE_WINDOW DIALOGEX 0, 0, 332, 288
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    LTEXT           "Window Behaviour",IDC_TITLE_WINDOW,6,6,126,24
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO
+BEGIN
+    IDD_PREFERENCE_MAIN, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 302
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 169
+    END
+
+    IDD_PREFERENCE_NOTIFY_ICON, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 302
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 169
+    END
+
+    IDD_PREFERENCE_WINDOW, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 302
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 169
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// AFX_DIALOG_LAYOUT
+//
+
+IDD_PREFERENCE_MAIN AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
+
+IDD_PREFERENCE_NOTIFY_ICON AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
+
+IDD_PREFERENCE_WINDOW AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
+
+#endif    // 中文(简体，中国) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+
