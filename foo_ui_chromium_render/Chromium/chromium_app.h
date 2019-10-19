@@ -7,6 +7,7 @@ public:
 
 public:
 	CefRefPtr<CefRenderProcessHandler> GetRenderProcessHandler() override;
+	void OnWebKitInitialized() override;
 
 private:
 	IMPLEMENT_REFCOUNTING(ChromiumApp);

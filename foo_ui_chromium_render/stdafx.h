@@ -1,5 +1,8 @@
 #pragma once
 
+// STD file
+#include <string>
+
 // Windows file
 #include <Windows.h>
 
@@ -11,4 +14,5 @@
 #include <include/wrapper/cef_message_router.h>
 
 // Project
+#include "Resources/resource.h"
 #include "Chromium/chromium_app.h"

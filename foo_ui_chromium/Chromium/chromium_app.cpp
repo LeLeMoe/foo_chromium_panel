@@ -1,6 +1,6 @@
 #include "../stdafx.h"
 
-ChromiumApp::ChromiumApp() : handle(NULL), url(), client(nullptr) {}
+ChromiumApp::ChromiumApp() : handle(NULL), url(), client(nullptr), timer_event(NULL) {}
 
 void ChromiumApp::init(HWND hwnd, pfc::string8 url) {
 	this->handle = hwnd;
@@ -10,7 +10,9 @@ void ChromiumApp::init(HWND hwnd, pfc::string8 url) {
 	CefMainArgs main_args(core_api::get_my_instance());
 	CefSettings settings;
 	CefString(&settings.browser_subprocess_path).FromASCII(core_api::get_my_render_path().c_str());
+	CefString(&settings.log_file).FromASCII(core_api::get_my_log_path().c_str());
 	settings.no_sandbox = true;
+	settings.ignore_certificate_errors = true;
 	CefInitialize(main_args, settings, this, nullptr);
 	this->timer_event = SetTimer(this->handle, 0, 5, NULL);
 	this->register_message(WM_TIMER, this, &ChromiumApp::on_timer);
@@ -39,6 +41,8 @@ CefRefPtr<CefBrowserProcessHandler> ChromiumApp::GetBrowserProcessHandler() {
 void ChromiumApp::OnContextInitialized() {
 	CEF_REQUIRE_UI_THREAD();
 	CefBrowserSettings browser_settings;
+	browser_settings.web_security = STATE_DISABLED;
+	browser_settings.file_access_from_file_urls = STATE_ENABLED;
 	CefWindowInfo window_info;
 	RECT rect;
 	GetClientRect(this->handle, &rect);

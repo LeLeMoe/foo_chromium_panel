@@ -1,5 +1,8 @@
 #pragma once
 
+// Debug files
+#include <string>
+
 // Sdk files
 #include <helpers/foobar2000+atl.h>
 #include <helpers/atl-misc.h>
@@ -15,7 +18,6 @@
 #include <include/cef_client.h>
 #include <include/cef_browser.h>
 #include <include/cef_life_span_handler.h>
-#include <include/cef_request_handler.h>
 #include <include/cef_browser_process_handler.h>
 #include <include/internal/cef_types_wrappers.h>
 #include <include/internal/cef_win.h>

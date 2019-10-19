@@ -58,13 +58,9 @@ void UserInterfaceChromium::save_window_size() {
 		cfg_window_width = window_rect.right - window_rect.left;
 		cfg_window_height = window_rect.bottom - window_rect.top;
 	}
-	
 }
 
-#include <string>
 HWND UserInterfaceChromium::process_init() {
-	// Debug
-	MessageBoxA(NULL, (std::to_string(cfg_window_x) + " " + std::to_string(cfg_window_y)).c_str(), "NOOOOO", MB_OK);
 	// Register window class
 	WNDCLASS wc = {};
 	wc.hInstance = core_api::get_my_instance();
@@ -78,7 +74,7 @@ HWND UserInterfaceChromium::process_init() {
 		return NULL;
 	}
 	// Register message
-	MessageObject::register_message(WM_DESTROY, this, &UserInterfaceChromium::on_destroy);
+	MessageObject::register_message(WM_CLOSE, this, &UserInterfaceChromium::on_close);
 	MessageObject::register_message(WM_SIZE, this, &UserInterfaceChromium::on_size);
 	MessageObject::register_message(WM_SYSCOMMAND, this, &UserInterfaceChromium::on_syscommand);
 	// Create window
@@ -101,19 +97,17 @@ HWND UserInterfaceChromium::process_init() {
 	}
 	return this->window_handle;
 }
-
+ 
 void UserInterfaceChromium::process_shutdown() {
-	// Debug
-	MessageBoxA(NULL, (std::to_string(cfg_window_x) + " " + std::to_string(cfg_window_y)).c_str(), "NOOOOO", MB_OK);
 	if (this->window_handle != NULL) {
 		// Delete taskbar icon
 		this->notify_icon.destroy();
 		// hide window
-		ShowWindow(window_handle, SW_MINIMIZE);
+		ShowWindow(this->window_handle, SW_MINIMIZE);
 		// Close cef
 		this->app->destroy();
 		// Unregister message
-		this->unregister_message(WM_DESTROY);
+		this->unregister_message(WM_CLOSE);
 		this->unregister_message(WM_SIZE);
 		this->unregister_message(WM_SYSCOMMAND);
 		// Unregister class
@@ -121,7 +115,7 @@ void UserInterfaceChromium::process_shutdown() {
 	}
 }
 
-LRESULT UserInterfaceChromium::on_destroy(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
+LRESULT UserInterfaceChromium::on_close(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
 	cfg_window_is_max = false;
 	standard_commands::main_exit();
 	return 0;
