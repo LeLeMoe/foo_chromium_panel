@@ -23,8 +23,8 @@ void ChromiumApp::resize_browser(unsigned int width, unsigned int height) {
 }
 
 void ChromiumApp::destroy() {
-	this->client->destroy();
 	KillTimer(NULL, this->timer_event);
+	this->client->destroy();
 	this->unregister_message(WM_TIMER);
 	CefShutdown();
 }
@@ -41,8 +41,6 @@ CefRefPtr<CefBrowserProcessHandler> ChromiumApp::GetBrowserProcessHandler() {
 void ChromiumApp::OnContextInitialized() {
 	CEF_REQUIRE_UI_THREAD();
 	CefBrowserSettings browser_settings;
-	browser_settings.web_security = STATE_DISABLED;
-	browser_settings.file_access_from_file_urls = STATE_ENABLED;
 	CefWindowInfo window_info;
 	RECT rect;
 	GetClientRect(this->handle, &rect);

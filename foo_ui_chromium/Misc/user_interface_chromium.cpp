@@ -82,7 +82,7 @@ HWND UserInterfaceChromium::process_init() {
 	this->window_handle = CreateWindowEx(WS_EX_APPWINDOW, FOO_UI_CHROMIUM_WINDOW_CLASS, FOO_UI_CHROMIUM_WINDOW_NAME, window_style, cfg_window_x, cfg_window_y, cfg_window_width, cfg_window_height, nullptr, nullptr, core_api::get_my_instance(), nullptr);
 	if (window_handle == nullptr) {
 		UnregisterClass(FOO_UI_CHROMIUM_WINDOW_CLASS, core_api::get_my_instance());
-		return false;
+		return NULL;
 	}
 	// Initialize cef
 	this->app = new ChromiumApp;
@@ -103,7 +103,8 @@ void UserInterfaceChromium::process_shutdown() {
 		// Delete taskbar icon
 		this->notify_icon.destroy();
 		// hide window
-		ShowWindow(this->window_handle, SW_MINIMIZE);
+		ShowWindow(this->window_handle, SW_HIDE);
+		DestroyWindow(this->window_handle);
 		// Close cef
 		this->app->destroy();
 		// Unregister message

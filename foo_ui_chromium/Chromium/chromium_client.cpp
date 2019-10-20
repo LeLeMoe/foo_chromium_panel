@@ -27,6 +27,7 @@ bool ChromiumClient::DoClose(CefRefPtr<CefBrowser> browser) {
 }
 
 bool ChromiumClient::OnBeforePopup(CefRefPtr<CefBrowser> browser, CefRefPtr<CefFrame> frame, const CefString& target_url, const CefString& target_frame_name, WindowOpenDisposition target_disposition, bool user_gesture, const CefPopupFeatures& popupFeatures, CefWindowInfo& windowInfo, CefRefPtr<CefClient>& client, CefBrowserSettings& settings, CefRefPtr<CefDictionaryValue>& extra_info, bool* no_javascript_access) {
+	CEF_REQUIRE_UI_THREAD();
 	this->browser->GetMainFrame()->LoadURL(target_url);
 	return true;
 }
