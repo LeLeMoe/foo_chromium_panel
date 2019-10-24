@@ -40,6 +40,7 @@ CefRefPtr<CefBrowserProcessHandler> ChromiumApp::GetBrowserProcessHandler() {
 
 void ChromiumApp::OnContextInitialized() {
 	CEF_REQUIRE_UI_THREAD();
+	// Create browser
 	CefBrowserSettings browser_settings;
 	CefWindowInfo window_info;
 	RECT rect;
@@ -50,4 +51,6 @@ void ChromiumApp::OnContextInitialized() {
 	rect.left = 0;
 	window_info.SetAsChild(this->handle, rect);
 	CefBrowserHost::CreateBrowser(window_info, this->client, this->url.c_str(), browser_settings, nullptr, nullptr);
+	// Register scheme
+	CefRegisterSchemeHandlerFactory("http", FOO_UI_CHROMIUM_API_POST_ADDRESS, new ChromiumSchemeHandlerFactory);
 }

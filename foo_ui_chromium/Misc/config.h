@@ -34,3 +34,6 @@ constexpr auto FOO_UI_CHROMIUM_PREFERNECE_NOTIFY_ICON_NAME = "Taskbar Icon";
 
 // Render
 constexpr auto FOO_UI_CHROMIUM_SUB_FILENAME = "foo_ui_chromium_render.exe";
+
+// Cef API
+constexpr auto FOO_UI_CHROMIUM_API_POST_ADDRESS = "2B2BE8EB-336D-4E5B-9BA3-000D7BC6B097";
