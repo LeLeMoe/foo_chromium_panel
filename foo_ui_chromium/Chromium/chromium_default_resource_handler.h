@@ -12,7 +12,8 @@ public:
 	void Cancel() override;
 
 private:
-	pfc::string8 reposnd;
+
+	pfc::string8 response;
 	size_t offest;
 	IMPLEMENT_REFCOUNTING(ChromiumDefaultSourceHandler);
 };

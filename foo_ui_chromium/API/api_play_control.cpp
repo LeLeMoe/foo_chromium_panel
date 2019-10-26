@@ -1,57 +1,31 @@
 #include "../stdafx.h"
 
-APIPlayControl::APIPlayControl(CefRefPtr<CefDictionaryValue> json) : APIBase(json) {}
+APIPlayControl::APIPlayControl(CefRefPtr<CefDictionaryValue> post_json, CefRefPtr<CefResourceReadCallback> callback, void* data_out, size_t* offest, int bytes_to_read, pfc::string8* response) :
+		APIBase(post_json, callback, data_out, offest, bytes_to_read, response) {}
 
-bool APIPlayControl::Open(CefRefPtr<CefRequest> request, bool& handle_request, CefRefPtr<CefCallback> callback) {
-	CEF_REQUIRE_IO_THREAD();
-	if (this->json_request->GetValue("cmd")->GetString() == "fb2k.play_control.play") {
-		static_api_ptr_t<main_thread_callback_manager>()->add_callback(new service_impl_t<MainThreadCallbackPlay>);
-		this->reposnd = "{}";
-		this->status_code = 200;
-	} else if (this->json_request->GetValue("cmd")->GetString() == "fb2k.play_control.pause") {
-		static_api_ptr_t<main_thread_callback_manager>()->add_callback(new service_impl_t<MainThreadCallbackPause>);
-		this->reposnd = "{}";
-		this->status_code = 200;
-	} else if (this->json_request->GetValue("cmd")->GetString() == "fb2k.play_control.play_or_pause") {
-		static_api_ptr_t<main_thread_callback_manager>()->add_callback(new service_impl_t<MainThreadCallbackPlayOrPause>);
-		this->reposnd = "{}";
-		this->status_code = 200;
-	} else if (this->json_request->GetValue("cmd")->GetString() == "fb2k.play_control.stop") {
-		static_api_ptr_t<main_thread_callback_manager>()->add_callback(new service_impl_t<MainThreadCallbackStop>);
-		this->reposnd = "{}";
-		this->status_code = 200;
-	} else if (this->json_request->GetValue("cmd")->GetString() == "fb2k.play_control.next") {
-		static_api_ptr_t<main_thread_callback_manager>()->add_callback(new service_impl_t<MainThreadCallbackNext>);
-		this->reposnd = "{}";
-		this->status_code = 200;
-	} else if (this->json_request->GetValue("cmd")->GetString() == "fb2k.play_control.previous") {
-		static_api_ptr_t<main_thread_callback_manager>()->add_callback(new service_impl_t<MainThreadCallbackPrevious>);
-		this->reposnd = "{}";
-		this->status_code = 200;
+void APIPlayControl::callback_run() {
+	if (this->post_json->GetValue("cmd")->GetString() == "fb2k.play_control.play") {
+		standard_commands::main_play();
+		this->response->add_string("{\"status\":\"success\"}");
+	} else if (this->post_json->GetValue("cmd")->GetString() == "fb2k.play_control.pause") {
+		standard_commands::main_pause();
+		this->response->add_string("{\"status\":\"success\"}");
+	} else if (this->post_json->GetValue("cmd")->GetString() == "fb2k.play_control.play_or_pause") {
+		standard_commands::main_play_or_pause();
+		this->response->add_string("{\"status\":\"success\"}");
+	} else if (this->post_json->GetValue("cmd")->GetString() == "fb2k.play_control.stop") {
+		standard_commands::main_stop();
+		this->response->add_string("{\"status\":\"success\"}");
+	} else if (this->post_json->GetValue("cmd")->GetString() == "fb2k.play_control.next") {
+		standard_commands::main_next();
+		this->response->add_string("{\"status\":\"success\"}");
+	} else if (this->post_json->GetValue("cmd")->GetString() == "fb2k.play_control.previous") {
+		standard_commands::main_previous();
+		this->response->add_string("{\"status\":\"success\"}");
 	}
-	handle_request = true;
-	return true;
+	this->finish();
 }
 
-CefRefPtr<CefResourceHandler> APIPlayControl::api_factory(CefRefPtr<CefDictionaryValue> json) {
-	return new APIPlayControl(json);
-}
-
-void APIPlayControl::MainThreadCallbackPlay::callback_run() {
-	standard_commands::main_play();
-}
-void APIPlayControl::MainThreadCallbackPause::callback_run() {
-	standard_commands::main_pause();
-}
-void APIPlayControl::MainThreadCallbackPlayOrPause::callback_run() {
-	standard_commands::main_play_or_pause();
-}
-void APIPlayControl::MainThreadCallbackStop::callback_run() {
-	standard_commands::main_stop();
-}
-void APIPlayControl::MainThreadCallbackNext::callback_run() {
-	standard_commands::main_next();
-}
-void APIPlayControl::MainThreadCallbackPrevious::callback_run() {
-	standard_commands::main_previous();
+service_ptr_t<main_thread_callback> APIPlayControl::factory(CefRefPtr<CefDictionaryValue> post_json, CefRefPtr<CefResourceReadCallback> callback, void* data_out, size_t* offest, int bytes_to_read, pfc::string8* response) {
+	return new service_impl_t<APIPlayControl>(post_json, callback, data_out, offest, bytes_to_read, response);
 }

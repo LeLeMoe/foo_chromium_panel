@@ -9,7 +9,7 @@ public:
 	CefRefPtr<CefResourceHandler> Create(CefRefPtr<CefBrowser> browser, CefRefPtr<CefFrame> frame, const CefString& scheme_name, CefRefPtr<CefRequest> request) override;
 
 public:
-	using SchemeFactory = CefRefPtr<CefResourceHandler>(*)(CefRefPtr<CefDictionaryValue>);
+	using SchemeFactory = service_ptr_t<main_thread_callback>(*)(CefRefPtr<CefDictionaryValue>, CefRefPtr<CefResourceReadCallback>, void*, size_t*, int, pfc::string8*);
 
 private:
 	void register_scheme_factory();

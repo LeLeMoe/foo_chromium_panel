@@ -36,6 +36,7 @@
 #include "API/api_base.h"
 #include "API/api_play_control.h"
 #include "Chromium/chromium_default_resource_handler.h"
+#include "Chromium/chromium_resource_handler.h"
 #include "Chromium/chromium_scheme_handler_factory.h"
 #include "Chromium/chromium_client.h"
 #include "Chromium/chromium_app.h"

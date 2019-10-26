@@ -132,6 +132,7 @@
     <ClInclude Include="foo_ui_chromium\Chromium\chromium_app.h" />
     <ClInclude Include="foo_ui_chromium\Chromium\chromium_client.h" />
     <ClInclude Include="foo_ui_chromium\Chromium\chromium_default_resource_handler.h" />
+    <ClInclude Include="foo_ui_chromium\Chromium\chromium_resource_handler.h" />
     <ClInclude Include="foo_ui_chromium\Chromium\chromium_scheme_handler_factory.h" />
     <ClInclude Include="foo_ui_chromium\Misc\config.h" />
     <ClInclude Include="foo_ui_chromium\Misc\helper.h" />
@@ -151,6 +152,7 @@
     <ClCompile Include="foo_ui_chromium\Chromium\chromium_app.cpp" />
     <ClCompile Include="foo_ui_chromium\Chromium\chromium_client.cpp" />
     <ClCompile Include="foo_ui_chromium\Chromium\chromium_default_resource_handler.cpp" />
+    <ClCompile Include="foo_ui_chromium\Chromium\chromium_resource_handler.cpp" />
     <ClCompile Include="foo_ui_chromium\Chromium\chromium_scheme_handler_factory.cpp" />
     <ClCompile Include="foo_ui_chromium\Misc\foo_ui_chromium.cpp" />
     <ClCompile Include="foo_ui_chromium\Misc\helper.cpp" />

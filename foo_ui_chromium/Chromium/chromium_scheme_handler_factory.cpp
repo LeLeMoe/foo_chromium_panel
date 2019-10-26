@@ -7,6 +7,9 @@ ChromiumSchemeHandlerFactory::ChromiumSchemeHandlerFactory() : scheme_factory_ma
 CefRefPtr<CefResourceHandler> ChromiumSchemeHandlerFactory::Create(CefRefPtr<CefBrowser> browser, CefRefPtr<CefFrame> frame, const CefString& scheme_name, CefRefPtr<CefRequest> request) {
 	CEF_REQUIRE_IO_THREAD();
 	CefPostData::ElementVector element_vector;
+	if (request->GetPostData() == nullptr) {
+		return new ChromiumDefaultSourceHandler;
+	}
 	request->GetPostData()->GetElements(element_vector);
 	auto bytes_num = element_vector[0]->GetBytesCount();
 	auto bytes = new char[bytes_num + 1];
@@ -28,7 +31,7 @@ CefRefPtr<CefResourceHandler> ChromiumSchemeHandlerFactory::Create(CefRefPtr<Cef
 			auto cmd_string = value_object->GetValue("cmd")->GetString().ToString();
 			auto factory_ptr = *this->scheme_factory_map.query_ptr(pfc::string8(cmd_string.c_str()));
 			if (factory_ptr != NULL) {
-				return factory_ptr(value_object);
+				return new ChromiumResourceHandler(factory_ptr, value_object);
 			} else {
 				return new ChromiumDefaultSourceHandler;
 			}
@@ -38,10 +41,13 @@ CefRefPtr<CefResourceHandler> ChromiumSchemeHandlerFactory::Create(CefRefPtr<Cef
 
 void ChromiumSchemeHandlerFactory::register_scheme_factory() {
 	// Play control
-	this->scheme_factory_map.set(pfc::string8("fb2k.play_control.play"), &APIPlayControl::api_factory);
-	this->scheme_factory_map.set(pfc::string8("fb2k.play_control.pause"), &APIPlayControl::api_factory);
-	this->scheme_factory_map.set(pfc::string8("fb2k.play_control.play_or_pause"), &APIPlayControl::api_factory);
-	this->scheme_factory_map.set(pfc::string8("fb2k.play_control.stop"), &APIPlayControl::api_factory);
-	this->scheme_factory_map.set(pfc::string8("fb2k.play_control.next"), &APIPlayControl::api_factory);
-	this->scheme_factory_map.set(pfc::string8("fb2k.play_control.previous"), &APIPlayControl::api_factory);
+	this->scheme_factory_map.set(pfc::string8("fb2k.play_control.play"), &APIPlayControl::factory);
+	this->scheme_factory_map.set(pfc::string8("fb2k.play_control.pause"), &APIPlayControl::factory);
+	this->scheme_factory_map.set(pfc::string8("fb2k.play_control.play_or_pause"), &APIPlayControl::factory);
+	this->scheme_factory_map.set(pfc::string8("fb2k.play_control.stop"), &APIPlayControl::factory);
+	this->scheme_factory_map.set(pfc::string8("fb2k.play_control.next"), &APIPlayControl::factory);
+	this->scheme_factory_map.set(pfc::string8("fb2k.play_control.previous"), &APIPlayControl::factory);
+	this->scheme_factory_map.set(pfc::string8("fb2k.play_control.set_now_time"), &APIPlayControl::factory);
+	this->scheme_factory_map.set(pfc::string8("fb2k.play_control.get_total_time"), &APIPlayControl::factory);
+	this->scheme_factory_map.set(pfc::string8("fb2k.play_control.get_now_time"), &APIPlayControl::factory);
 }

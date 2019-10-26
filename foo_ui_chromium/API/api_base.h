@@ -1,20 +1,21 @@
 #pragma once
 
-class APIBase : public CefResourceHandler {
+class APIBase : public main_thread_callback {
 public:
-	APIBase(CefRefPtr<CefDictionaryValue> json);
+	APIBase(CefRefPtr<CefDictionaryValue> post_json, CefRefPtr<CefResourceReadCallback> callback, void* data_out, size_t *offest, int bytes_to_read, pfc::string8 *response);
 	virtual ~APIBase() = default;
 
 public:
-	void GetResponseHeaders(CefRefPtr<CefResponse> response, int64& response_length, CefString& redirectUrl) override;
-	bool ReadResponse(void* data_out, int bytes_to_read, int& bytes_read, CefRefPtr<CefCallback> callback) override;
-	void Cancel() override;
+	void callback_run() = 0;
+	void finish();
 
 protected:
-	pfc::string8 reposnd;
-	CefRefPtr<CefDictionaryValue> json_request;
-	int status_code;
+	CefRefPtr<CefDictionaryValue> post_json;
+	pfc::string8* response;
 
 private:
-	size_t offest;
+	CefRefPtr<CefResourceReadCallback> callback;
+	void* data_out;
+	size_t* offest;
+	int bytes_to_read;
 };

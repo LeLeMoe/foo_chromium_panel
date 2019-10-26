@@ -2,42 +2,12 @@
 
 class APIPlayControl : public APIBase {
 public:
-	APIPlayControl(CefRefPtr<CefDictionaryValue> json);
+	APIPlayControl(CefRefPtr<CefDictionaryValue> post_json, CefRefPtr<CefResourceReadCallback> callback, void* data_out, size_t* offest, int bytes_to_read, pfc::string8* response);
 	virtual ~APIPlayControl() = default;
 
 public:
-	bool Open(CefRefPtr<CefRequest> request, bool& handle_request, CefRefPtr<CefCallback> callback) override;
-
+	void callback_run();
 
 public:
-	static CefRefPtr<CefResourceHandler> api_factory(CefRefPtr<CefDictionaryValue> json);
-
-private:
-	class MainThreadCallbackPlay : public main_thread_callback {
-	public:
-		void callback_run() override;
-	};
-	class MainThreadCallbackPause : public main_thread_callback {
-	public:
-		void callback_run() override;
-	};
-	class MainThreadCallbackPlayOrPause : public main_thread_callback {
-	public:
-		void callback_run() override;
-	};
-	class MainThreadCallbackStop : public main_thread_callback {
-	public:
-		void callback_run() override;
-	};
-	class MainThreadCallbackNext : public main_thread_callback {
-	public:
-		void callback_run() override;
-	};
-	class MainThreadCallbackPrevious : public main_thread_callback {
-	public:
-		void callback_run() override;
-	};
-
-private:
-	IMPLEMENT_REFCOUNTING(APIPlayControl);
+	static service_ptr_t<main_thread_callback> factory(CefRefPtr<CefDictionaryValue> post_json, CefRefPtr<CefResourceReadCallback> callback, void* data_out, size_t* offest, int bytes_to_read, pfc::string8* response);
 };
