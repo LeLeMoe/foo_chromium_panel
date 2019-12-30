@@ -12,7 +12,6 @@ public:
 	void apply() override;
 	void reset() override;
 
-
 public:
 	enum { IDD = IDD_PREFERENCE_MAIN };
 

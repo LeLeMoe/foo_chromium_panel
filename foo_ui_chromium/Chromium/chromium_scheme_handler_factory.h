@@ -15,6 +15,6 @@ private:
 	void register_scheme_factory();
 
 private:
-	pfc::map_t<pfc::string8, SchemeFactory> scheme_factory_map;
+	pfc::map_t<int, SchemeFactory> scheme_factory_map;
 	IMPLEMENT_REFCOUNTING(ChromiumSchemeHandlerFactory);
 };

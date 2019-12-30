@@ -76,7 +76,7 @@ HWND UserInterfaceChromium::process_init() {
 	// Register message
 	MessageObject::register_message(WM_CLOSE, this, &UserInterfaceChromium::on_close);
 	MessageObject::register_message(WM_SIZE, this, &UserInterfaceChromium::on_size);
-	MessageObject::register_message(WM_SYSCOMMAND, this, &UserInterfaceChromium::on_syscommand);
+	MessageObject::register_message(WM_MOVE, this, &UserInterfaceChromium::on_move);
 	// Create window
 	auto window_style = WS_OVERLAPPED | WS_MAXIMIZEBOX | WS_MINIMIZEBOX | WS_CAPTION | WS_SYSMENU | WS_CLIPCHILDREN | WS_CLIPSIBLINGS | WS_THICKFRAME;
 	this->window_handle = CreateWindowEx(WS_EX_APPWINDOW, FOO_UI_CHROMIUM_WINDOW_CLASS, FOO_UI_CHROMIUM_WINDOW_NAME, window_style, cfg_window_x, cfg_window_y, cfg_window_width, cfg_window_height, nullptr, nullptr, core_api::get_my_instance(), nullptr);
@@ -110,7 +110,7 @@ void UserInterfaceChromium::process_shutdown() {
 		// Unregister message
 		this->unregister_message(WM_CLOSE);
 		this->unregister_message(WM_SIZE);
-		this->unregister_message(WM_SYSCOMMAND);
+		this->unregister_message(WM_MOVE);
 		// Unregister class
 		UnregisterClass(FOO_UI_CHROMIUM_WINDOW_CLASS, core_api::get_my_instance());
 	}
@@ -123,18 +123,9 @@ LRESULT UserInterfaceChromium::on_close(HWND hwnd, UINT uMsg, WPARAM wParam, LPA
 }
 
 LRESULT UserInterfaceChromium::on_size(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
-	if (cfg_window_is_max == false) {
-		this->save_window_size();
-	}
-	if (this->app != nullptr) {
-		this->app->resize_browser(LOWORD(lParam), HIWORD(lParam));
-	}
-	return DefWindowProc(hwnd, uMsg, wParam, lParam);
-}
-
-LRESULT UserInterfaceChromium::on_syscommand(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
-	switch (wParam) {
-	case SC_MINIMIZE:
+	if (wParam == SIZE_MAXIMIZED) {
+		cfg_window_is_max = true;
+	} else if (wParam == SIZE_MINIMIZED) {
 		if (cfg_window_is_max == false) {
 			this->save_window_size();
 		}
@@ -145,13 +136,19 @@ LRESULT UserInterfaceChromium::on_syscommand(HWND hwnd, UINT uMsg, WPARAM wParam
 				this->notify_icon.show();
 			}
 		}
-		break;
-	case SC_MAXIMIZE:
-		cfg_window_is_max = true;
-		break;
-	case SC_RESTORE:
+	} else if (wParam == SIZE_RESTORED) {
 		cfg_window_is_max = false;
-		break;
+		this->save_window_size();
+	}
+	if (this->app != nullptr) {
+		this->app->resize_browser(LOWORD(lParam), HIWORD(lParam));
+	}
+	return DefWindowProc(hwnd, uMsg, wParam, lParam);
+}
+
+LRESULT UserInterfaceChromium::on_move(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
+	if (cfg_window_is_max == false) {
+		this->save_window_size();
 	}
 	return DefWindowProc(hwnd, uMsg, wParam, lParam);
 }

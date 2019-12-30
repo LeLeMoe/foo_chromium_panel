@@ -25,11 +25,11 @@ CefRefPtr<CefResourceHandler> ChromiumSchemeHandlerFactory::Create(CefRefPtr<Cef
 		auto value_object = value->GetDictionary();
 		if (value_object->HasKey("cmd") == false) {
 			return new ChromiumDefaultSourceHandler;
-		} else if(value_object->GetType("cmd") != VTYPE_STRING) {
+		} else if(value_object->GetType("cmd") != VTYPE_INT) {
 			return new ChromiumDefaultSourceHandler;
 		} else {
-			auto cmd_string = value_object->GetValue("cmd")->GetString().ToString();
-			auto factory_ptr = *this->scheme_factory_map.query_ptr(pfc::string8(cmd_string.c_str()));
+			auto cmd_code = value_object->GetValue("cmd")->GetInt();
+			auto factory_ptr = *this->scheme_factory_map.query_ptr(cmd_code);
 			if (factory_ptr != NULL) {
 				return new ChromiumResourceHandler(factory_ptr, value_object);
 			} else {
@@ -41,13 +41,19 @@ CefRefPtr<CefResourceHandler> ChromiumSchemeHandlerFactory::Create(CefRefPtr<Cef
 
 void ChromiumSchemeHandlerFactory::register_scheme_factory() {
 	// Play control
-	this->scheme_factory_map.set(pfc::string8("fb2k.play_control.play"), &APIPlayControl::factory);
-	this->scheme_factory_map.set(pfc::string8("fb2k.play_control.pause"), &APIPlayControl::factory);
-	this->scheme_factory_map.set(pfc::string8("fb2k.play_control.play_or_pause"), &APIPlayControl::factory);
-	this->scheme_factory_map.set(pfc::string8("fb2k.play_control.stop"), &APIPlayControl::factory);
-	this->scheme_factory_map.set(pfc::string8("fb2k.play_control.next"), &APIPlayControl::factory);
-	this->scheme_factory_map.set(pfc::string8("fb2k.play_control.previous"), &APIPlayControl::factory);
-	this->scheme_factory_map.set(pfc::string8("fb2k.play_control.set_now_time"), &APIPlayControl::factory);
-	this->scheme_factory_map.set(pfc::string8("fb2k.play_control.get_total_time"), &APIPlayControl::factory);
-	this->scheme_factory_map.set(pfc::string8("fb2k.play_control.get_now_time"), &APIPlayControl::factory);
+	this->scheme_factory_map.set(0x00000, &APIPlayControl::factory);
+	this->scheme_factory_map.set(0x00001, &APIPlayControl::factory);
+	this->scheme_factory_map.set(0x00002, &APIPlayControl::factory);
+	this->scheme_factory_map.set(0x00003, &APIPlayControl::factory);
+	this->scheme_factory_map.set(0x00004, &APIPlayControl::factory);
+	this->scheme_factory_map.set(0x00005, &APIPlayControl::factory);
+	this->scheme_factory_map.set(0x00006, &APIPlayControl::factory);
+	this->scheme_factory_map.set(0x00007, &APIPlayControl::factory);
+	this->scheme_factory_map.set(0x00008, &APIPlayControl::factory);
+	// Volume control
+	this->scheme_factory_map.set(0x00100, &APIVolumeControl::factory);
+	this->scheme_factory_map.set(0x00101, &APIVolumeControl::factory);
+	this->scheme_factory_map.set(0x00102, &APIVolumeControl::factory);
+	this->scheme_factory_map.set(0x00103, &APIVolumeControl::factory);
+	this->scheme_factory_map.set(0x00104, &APIVolumeControl::factory);
 }

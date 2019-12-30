@@ -7,7 +7,6 @@ let fb2k = new class fb2k {
             this.#xml_request.setRequestHeader("Content-Type","text/plain");
         }
         post(data) {
-            alert(JSON.stringify(data));
             this.#xml_request.send(JSON.stringify(data));
             return { ready_state : this.#xml_request.readyState, status : this.#xml_request.status, response : this.#xml_request.responseText };
         }
@@ -16,140 +15,162 @@ let fb2k = new class fb2k {
     play_control = new class {
         play() {
             let request = new fb2k.PostRequest();
-            let respond = request.post({ cmd : "fb2k.play_control.play" });
-            if(respond.ready_state == 4 && respond.status == 200) {
-                alert(respond.response);
-                return true;
+            let respond = request.post({ cmd: 0x00000 });
+            let respond_json = JSON.parse(respond.response);
+            if (respond.ready_state == 4 && respond.status == 200) {
+                return respond_json;
             } else {
-                return false;
+                return { status: "fail", detail: "communicate error" };
             }
         }
         pause() {
             let request = new fb2k.PostRequest();
-            let respond = request.post({ cmd : "fb2k.play_control.pause" });
-            if(respond.ready_state == 4 && respond.status == 200) {
-                return true;
+            let respond = request.post({ cmd: 0x00001 });
+            let respond_json = JSON.parse(respond.response);
+            if (respond.ready_state == 4 && respond.status == 200) {
+                return respond_json;
             } else {
-                return false;
+                return { status: "fail", detail: "communicate error" };
             }
         }
         play_or_pause() {
             let request = new fb2k.PostRequest();
-            let respond = request.post({ cmd : "fb2k.play_control.play_or_pause" });
-            if(respond.ready_state == 4 && respond.status == 200) {
-                return true;
+            let respond = request.post({ cmd: 0x00002 });
+            let respond_json = JSON.parse(respond.response);
+            if (respond.ready_state == 4 && respond.status == 200) {
+                return respond_json;
             } else {
-                return false;
+                return { status: "fail", detail: "communicate error" };
             }
         }
         stop() {
             let request = new fb2k.PostRequest();
-            let respond = request.post({ cmd : "fb2k.play_control.stop" });
-            if(respond.ready_state == 4 && respond.status == 200) {
-                return true;
+            let respond = request.post({ cmd: 0x00003 });
+            let respond_json = JSON.parse(respond.response);
+            if (respond.ready_state == 4 && respond.status == 200) {
+                return respond_json;
             } else {
-                return false;
+                return { status: "fail", detail: "communicate error" };
             }
         }
         next() {
             let request = new fb2k.PostRequest();
-            let respond = request.post({ cmd : "fb2k.play_control.next" });
-            if(respond.ready_state == 4 && respond.status == 200) {
-                return true;
+            let respond = request.post({ cmd: 0x00004 });
+            let respond_json = JSON.parse(respond.response);
+            if (respond.ready_state == 4 && respond.status == 200) {
+                return respond_json;
             } else {
-                return false;
+                return { status: "fail", detail: "communicate error" };
             }
         }
         previous() {
             let request = new fb2k.PostRequest();
-            let respond = request.post({ cmd : "fb2k.play_control.previous" });
-            if(respond.ready_state == 4 && respond.status == 200) {
-                return true;
+            let respond = request.post({ cmd: 0x00005 });
+            let respond_json = JSON.parse(respond.response);
+            if (respond.ready_state == 4 && respond.status == 200) {
+                return respond_json;
             } else {
-                return false;
+                return { status: "fail", detail: "communicate error" };
             }
         }
         set_now_time(time) {
             if(typeof(value) != "number") {
-                return false;
+                return { status: "fail", detail: "wrong type of parameters" };
             }
-            if(time > fb2k.play_control.get_total_time()) {
-                return false;
-            }
-            let respond = request.post({ cmd : "fb2k.play_control.get_total_time", time : time });
-            if(respond.ready_state == 4 && respond.status == 200) {
-                return JSON.parse(respond.response).time;
+            let respond = request.post({ cmd: 0x00006, time: time });
+            let respond_json = JSON.parse(respond.response);
+            if (respond.ready_state == 4 && respond.status == 200) {
+                return respond_json;
             } else {
-                return -1;
+                return { status: "fail", detail: "communicate error" };
             }
         }
         get_total_time() {
             let request = new fb2k.PostRequest();
-            let respond = request.post({ cmd : "fb2k.play_control.get_total_time" });
-            if(respond.ready_state == 4 && respond.status == 200) {
-                return JSON.parse(respond.response).time;
+            let respond = request.post({ cmd: 0x00007 });
+            let respond_json = JSON.parse(respond.response);
+            if (respond.ready_state == 4 && respond.status == 200) {
+                return respond_json;
             } else {
-                return -1;
+                return { status: "fail", detail: "communicate error" };
             }
         }
         get_now_time() {
             let request = new fb2k.PostRequest();
-            let respond = request.post({ cmd : "fb2k.play_control.get_now_time" });
-            if(respond.ready_state == 4 && respond.status == 200) {
-                return JSON.parse(respond.response).time;
+            let respond = request.post({ cmd: 0x00008 });
+            let respond_json = JSON.parse(respond.response);
+            if (respond.ready_state == 4 && respond.status == 200) {
+                return respond_json;
             } else {
-                return -1;
+                return { status: "fail", detail: "communicate error" };
             }
         }
     };
     volume_control = new class {
         up() {
             let request = new fb2k.PostRequest();
-            let respond = request.post({ cmd : "fb2k.volume_control.up" });
-            if(respond.ready_state == 4 && respond.status == 200) {
-                return true;
+            let respond = request.post({ cmd: 0x00100 });
+            let respond_json = JSON.parse(respond.response);
+            if (respond.ready_state == 4 && respond.status == 200) {
+                return respond_json;
             } else {
-                return false;
+                return { status: "fail", detail: "communicate error" };
             }
         }
         down() {
             let request = new fb2k.PostRequest();
-            let respond = request.post({ cmd : "fb2k.volume_control.down" });
-            if(respond.ready_state == 4 && respond.status == 200) {
-                return true;
+            let respond = request.post({ cmd: 0x00101 });
+            let respond_json = JSON.parse(respond.response);
+            if (respond.ready_state == 4 && respond.status == 200) {
+                return respond_json;
             } else {
-                return false;
+                return { status: "fail", detail: "communicate error" };
             }
         }
         mute() {
             let request = new fb2k.PostRequest();
-            let respond = request.post({ cmd : "fb2k.volume_control.mute" });
-            if(respond.ready_state == 4 && respond.status == 200) {
-                return true;
+            let respond = request.post({ cmd: 0x00102 });
+            let respond_json = JSON.parse(respond.response);
+            if (respond.ready_state == 4 && respond.status == 200) {
+                return respond_json;
             } else {
-                return false;
+                return { status: "fail", detail: "communicate error" };
             }
         }
         set_volume(value) {
             if(typeof(value) != "number") {
-                return false;
+                return { status: "fail", detail: "wrong type of parameters" };
             }
             let request = new fb2k.PostRequest();
-            let respond = request.post({ cmd : "fb2k.volume_control.set_volume", volume : value });
-            if(respond.ready_state == 4 && respond.status == 200) {
-                return true;
+            let respond = request.post({ cmd: 0x00103, volume: value });
+            let respond_json = JSON.parse(respond.response);
+            if (respond.ready_state == 4 && respond.status == 200) {
+                return respond_json;
             } else {
-                return false;
+                return { status: "fail", detail: "communicate error" };
             }
         }
         get_volume() {
             let request = new fb2k.PostRequest();
-            let respond = request.post({ cmd : "fb2k.volume_control.get_volume" });
+            let respond = request.post({ cmd: 0x00104 });
+            let respond_json = JSON.parse(respond.response);
             if(respond.ready_state == 4 && respond.status == 200) {
-                return JSON.parse(respond.response).volume;
+                return respond_json;
             } else {
-                return -1;
+                return { status: "fail", detail: "communicate error" };
             }
         }
     };
+    playlist_manager = new class {
+        get_playlist_count() {
+            let request = new fb2k.PostRequest();
+            let respond = request.post({ cmd: 0x00200 });
+            let respond_json = JSON.parse(respond.response);
+            if (respond.ready_state == 4 && respond.status == 200 && respond_json.status == "success") {
+                return respond_json;
+            } else {
+                return { status: "fail", detail: "communicate error" };
+            }
+        }
+    }
 };

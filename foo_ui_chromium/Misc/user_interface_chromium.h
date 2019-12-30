@@ -28,7 +28,7 @@ private:
 private:
 	LRESULT on_close(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 	LRESULT on_size(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
-	LRESULT on_syscommand(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
+	LRESULT on_move(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 
 private:
 	HWND window_handle;

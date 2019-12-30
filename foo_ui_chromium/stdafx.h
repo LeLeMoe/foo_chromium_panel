@@ -12,6 +12,7 @@
 #include <WinUser.h>
 #include <Windows.h>
 #include <Shobjidl.h>
+#include <Shlobj.h>
 
 // Cef
 #include <include/cef_app.h>
@@ -35,6 +36,7 @@
 #include "Misc/notify_icon.h"
 #include "API/api_base.h"
 #include "API/api_play_control.h"
+#include "API/api_volume_control.h"
 #include "Chromium/chromium_default_resource_handler.h"
 #include "Chromium/chromium_resource_handler.h"
 #include "Chromium/chromium_scheme_handler_factory.h"
@@ -44,3 +46,4 @@
 #include "Preferences/preference_main.h"
 #include "Preferences/preference_private.h"
 #include "Preferences/preference_notify_icon.h"
+#include "Preferences/preference_developer.h"

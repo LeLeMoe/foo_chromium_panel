@@ -129,6 +129,7 @@
   <ItemGroup>
     <ClInclude Include="foo_ui_chromium\API\api_base.h" />
     <ClInclude Include="foo_ui_chromium\API\api_play_control.h" />
+    <ClInclude Include="foo_ui_chromium\API\api_volume_control.h" />
     <ClInclude Include="foo_ui_chromium\Chromium\chromium_app.h" />
     <ClInclude Include="foo_ui_chromium\Chromium\chromium_client.h" />
     <ClInclude Include="foo_ui_chromium\Chromium\chromium_default_resource_handler.h" />
@@ -139,16 +140,17 @@
     <ClInclude Include="foo_ui_chromium\Misc\message_object.h" />
     <ClInclude Include="foo_ui_chromium\Misc\notify_icon.h" />
     <ClInclude Include="foo_ui_chromium\Misc\user_interface_chromium.h" />
+    <ClInclude Include="foo_ui_chromium\Preferences\preference_developer.h" />
     <ClInclude Include="foo_ui_chromium\Preferences\preference_main.h" />
     <ClInclude Include="foo_ui_chromium\Preferences\preference_notify_icon.h" />
     <ClInclude Include="foo_ui_chromium\Preferences\preference_private.h" />
     <ClInclude Include="foo_ui_chromium\Resources\resource.h" />
     <ClInclude Include="foo_ui_chromium\stdafx.h" />
-    <ClInclude Include="resource.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="foo_ui_chromium\API\api_base.cpp" />
     <ClCompile Include="foo_ui_chromium\API\api_play_control.cpp" />
+    <ClCompile Include="foo_ui_chromium\API\api_volume_control.cpp" />
     <ClCompile Include="foo_ui_chromium\Chromium\chromium_app.cpp" />
     <ClCompile Include="foo_ui_chromium\Chromium\chromium_client.cpp" />
     <ClCompile Include="foo_ui_chromium\Chromium\chromium_default_resource_handler.cpp" />
@@ -159,7 +161,8 @@
     <ClCompile Include="foo_ui_chromium\Misc\message_object.cpp" />
     <ClCompile Include="foo_ui_chromium\Misc\notify_icon.cpp" />
     <ClCompile Include="foo_ui_chromium\Misc\user_interface_chromium.cpp" />
-    <ClCompile Include="foo_ui_chromium\Preferences\perference_main.cpp" />
+    <ClCompile Include="foo_ui_chromium\Preferences\preference_main.cpp" />
+    <ClCompile Include="foo_ui_chromium\Preferences\preference_developer.cpp" />
     <ClCompile Include="foo_ui_chromium\Preferences\preference_notify_icon.cpp" />
     <ClCompile Include="foo_ui_chromium\Preferences\preference_private.cpp" />
   </ItemGroup>
